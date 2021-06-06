@@ -55,7 +55,6 @@ Plug 'preservim/NERDTree'
 
 "Buffer Navigation - vim-airline
 Plug 'vim-airline/vim-airline'
-Plug 'ctrlpvim/ctrlp.vim'
 
 "Comment Plugin
 Plug 'preservim/nerdcommenter'
@@ -75,6 +74,19 @@ Plug 'fatih/vim-go'
 
 "Grammar checking because I can't english
 Plug 'rhysd/vim-grammarous'
+
+"Telescope Requirements
+Plug 'nvim-lua/popup.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+
+
+"Telescope
+Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
+Plug 'fannheyward/telescope-coc.nvim'
+
+"devicons
+Plug 'kyazdani42/nvim-web-devicons'
 
 call plug#end()
 
@@ -424,6 +436,16 @@ let g:mkdp_page_title = '「${name}」'
 let g:mkdp_filetypes = ['markdown']
 
 " normal/insert
-nnoremap <C-mp>MarkdownPreview
+nnoremap <C-mp> :MarkdownPreview
 "<Plug>MarkdownPreviewStop
 "<Plug>MarkdownPreviewToggle
+
+"Telescope
+" will find .lua file that exist at runtime
+" should be unique
+lua require("bashbunni") 
+nnoremap <C-_> <cmd>lua require("bashbunni").curr_buf() <cr>
+" nnoremap <C-_> :Telescope current_buffer_fuzzy_find sorting_strategy=ascending prompt_position=top <cr> 
+" nnoremap <C-_> <cmd>lua require('telescope.builtin').current_buffer_fuzzy_find({sorting_strategy="ascending", prompt_position="top"})<cr>
+nnoremap <F4> :lua package.loaded.bashbunni = nil <cr>:source ~/.config/nvim/init.vim <cr> 
+nnoremap <leader>sf :Telescope find_files cwd=~/Documents/Hobbies<cr>
