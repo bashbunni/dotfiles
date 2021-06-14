@@ -394,9 +394,14 @@ clientkeys = gears.table.join(
         function (c)
             c.maximized_horizontal = not c.maximized_horizontal
             c:raise()
-        end ,
-        {description = "(un)maximize horizontally", group = "client"})
+        end,
+        {description = "(un)maximize horizontally", group = "client"}),
+    -- My Bindings
+    awful.key({modkey, }, "z", function () awful.util.spawn("rofi -show run") end),
+    awful.key({modkey, "Shift"}, "d", function () awful.util.spawn("discord &!") end),
+    awful.key({modkey, "Shift"}, "i", function () awful.util.spawn("brave-browser &!") end)
 )
+
 
 -- Bind all key numbers to tags.
 -- Be careful: we use keycodes to make it work on any keyboard layout.
