@@ -22,9 +22,6 @@ require("awful.hotkeys_popup.keys")
 local debian = require("debian.menu")
 local has_fdo, freedesktop = pcall(require, "freedesktop")
 
--- Cyclefocus (window management)
-local cyclefocus = require('cyclefocus')
-
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
 -- another config (This code will only ever execute for the fallback config)
@@ -52,11 +49,10 @@ end
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
-beautiful.init(gears.filesystem.get_themes_dir() .. "xresources/theme.lua")
+beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
---terminal = "x-terminal-emulator"
-terminal = "alacritty"
+terminal = "x-terminal-emulator"
 editor = os.getenv("EDITOR") or "editor"
 editor_cmd = terminal .. " -e " .. editor
 
@@ -116,10 +112,14 @@ else
     })
 end
 
+-- Custom widget
 praisewidget = wibox.widget.textbox()
 praisewidget.text = "    I will ban you, you little shit    "
+
+
 mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
-                                     menu = mymainmenu})
+                                     menu = mymainmenu
+                                 })
 
 -- Menubar configuration
 menubar.utils.terminal = terminal -- Set the terminal for applications that require it
@@ -227,9 +227,9 @@ awful.screen.connect_for_each_screen(function(s)
         { -- Left widgets
             layout = wibox.layout.fixed.horizontal,
             mylauncher,
-            praisewidget,
             s.mytaglist,
             s.mypromptbox,
+            praisewidget,
         },
         s.mytasklist, -- Middle widget
         { -- Right widgets
@@ -253,14 +253,6 @@ root.buttons(gears.table.join(
 
 -- {{{ Key bindings
 globalkeys = gears.table.join(
-    
--- My bindings
--- Open file explorer
-    awful.key({modkey, }, "\'", function() awful.util.spawn("nautilus --browser ~") end),
--- Open Internet browser
-    awful.key({modkey, "Control"}, "i", function() awful.util.spawn("brave") end),
-
--- Defaults
     awful.key({ modkey,           }, "s",      hotkeys_popup.show_help,
               {description="show help", group="awesome"}),
     awful.key({ modkey,           }, "Left",   awful.tag.viewprev,
@@ -297,15 +289,13 @@ globalkeys = gears.table.join(
     awful.key({ modkey,           }, "u", awful.client.urgent.jumpto,
               {description = "jump to urgent client", group = "client"}),
     awful.key({ modkey,           }, "Tab",
-        function (c)
-            cyclefocus.cycle({modifier="Super_L"})
---[[            awful.client.focus.history.previous()
+        function ()
+            awful.client.focus.history.previous()
             if client.focus then
                 client.focus:raise()
             end
---]]
-        end),
---        {description = "go back", group = "client"}),
+        end,
+        {description = "go back", group = "client"}),
 
     -- Standard program
     awful.key({ modkey,           }, "Return", function () awful.spawn(terminal) end,
@@ -594,19 +584,11 @@ client.connect_signal("mouse::enter", function(c)
 end)
 
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
-client.connect_signal("unfocus", function(c) c.border_color = beautiful.bse change order_normal end)
+client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
 
 -- Autorun programs
 autorun = true
 autorunApps = {
-    "vivaldi",
-    "terminal",
-    "xautolock -time 10 -locker \"i3lock -c 000000 -e\"",
-    "xrandr --output DP-1 --primary --mode 1920x1080 --rate 60.00 --output HDMI-0 --mode 1920x1080 --rate 60.00 --left-of DP-1",
 }
-
--- My Widgets
-praisewidget = wibox.widget.textbox()
-praisewidget.text = "You are great!"
 
