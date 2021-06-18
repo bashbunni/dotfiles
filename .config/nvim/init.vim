@@ -45,13 +45,13 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'sheerun/vim-polyglot'
 
 "Debugging
+"I can't actually debug in nvim yet... This is a WIP
 Plug 'puremourning/vimspector'
 
 "Nav plugins
 Plug 'jistr/vim-nerdtree-tabs'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
-Plug 'preservim/NERDTree'
-"Plug 'jiangmiao/auto-pairs'
+"Plug 'preservim/NERDTree' we don't need bc telescope is just better
 
 "Buffer Navigation - vim-airline
 Plug 'vim-airline/vim-airline'
@@ -119,12 +119,12 @@ nnoremap <leader>bl :blast<CR>
 
 "Other
 nnoremap <leader><CR> :source ~/.config/nvim/init.vim<CR>
-nnoremap <leader>ne :NERDTreeToggle<CR>
+nnoremap <leader>ne :Telescope file_browser<CR>
 nnoremap <leader>f :call CocAction('format')<CR>
 
 
 autocmd StdinReadPre * let s:std
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | :vertical resize 60 | endif
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | :vertical resize 60 | endif
 autocmd BufEnter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 "==============================================================================

@@ -12,7 +12,8 @@ fi
 export ZSH="/home/bashbunni/.oh-my-zsh"
 export GOROOT=/usr/lib/go
 export GOPATH=$HOME/go
-export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
+export CARGO=$HOME/.cargo/bin
+export PATH=$PATH:$GOROOT/bin:$GOPATH/bin:$CARGO
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
@@ -115,6 +116,8 @@ echo "$(cat /home/bashbunni/banner)" | lolcat
 alias dotfiles='/usr/bin/git --git-dir=/home/bashbunni/.cfg/ --work-tree=/home/bashbunni'
 alias stream='cd ~/Documents/Hobbies/'
 alias bb='cd ~/Documents/bashbunni'
-
+alias notes='cd ~/Documents/Hobbies/dev-notebook'
+alias config='nvim ~/.config/nvim/init.vim'
+alias luaconf='nvim ~/.config/nvim/lua/bashbunni.lua'
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
