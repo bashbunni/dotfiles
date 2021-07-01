@@ -16,7 +16,6 @@ set nowritebackup
 set noswapfile
 set nu 
 set foldlevelstart=99
-syntax enable
 set scrolloff=7
 
 "==================================================================================
@@ -32,16 +31,18 @@ call plug#begin('~/.config/nvim/autoload/')
 " kyoz/purify
 Plug 'arzg/vim-colors-xcode'
 
-"Syntax plugin
-Plug 'vim-syntastic/syntastic'
+"Syntax plugin - NOT IN USE
+"Plug 'vim-syntastic/syntastic'
 
 "Markdown preview
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }}
 
-
 "Autocomplete plugin
 "Also do :CocInstall coc-clangd coc-tsserver coc-eslint coc-json coc-prettier coc-css coc-python coc-java 
+"TODO: edit cocconfig.json to import langs
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
+"Language packs
 Plug 'sheerun/vim-polyglot'
 
 "Debugging
@@ -49,12 +50,15 @@ Plug 'sheerun/vim-polyglot'
 Plug 'puremourning/vimspector'
 
 "Nav plugins
-Plug 'jistr/vim-nerdtree-tabs'
-Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+"Plug 'jistr/vim-nerdtree-tabs'
+"Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 "Plug 'preservim/NERDTree' we don't need bc telescope is just better
 
-"Buffer Navigation - vim-airline
-Plug 'vim-airline/vim-airline'
+"Buffer Navigation - vim-airline - NOT IN USE 
+"Plug 'vim-airline/vim-airline'
+
+"Nvim motions
+Plug 'phaazon/hop.nvim'
 
 "Comment Plugin
 Plug 'preservim/nerdcommenter'
