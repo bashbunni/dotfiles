@@ -49,11 +49,6 @@ Plug 'sheerun/vim-polyglot'
 "I can't actually debug in nvim yet... This is a WIP
 Plug 'puremourning/vimspector'
 
-"Nav plugins
-"Plug 'jistr/vim-nerdtree-tabs'
-"Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
-"Plug 'preservim/NERDTree' we don't need bc telescope is just better
-
 "Buffer Navigation - vim-airline - NOT IN USE 
 "Plug 'vim-airline/vim-airline'
 
@@ -84,7 +79,6 @@ Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 
-
 "Telescope
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 Plug 'fannheyward/telescope-coc.nvim'
@@ -98,16 +92,6 @@ call plug#end()
 ":colorscheme spring-night 
 :colorscheme xcodedarkhc 
 :set background=dark
-
-"Definitions
-"<leader>d: go to definition
-"K check documentation of class or method
-"<leader>n: show the usage of a name in current file
-"<leader>r: rename a name
-
-"Code checker
-"let g:neomake_python_enabled_makers = ['flake8']
-"call neomake#configure#automake('nrwi', 500)
 
 "==============================================================================
 "key combos
@@ -129,37 +113,10 @@ nnoremap <leader>f :call CocAction('format')<CR>
 
 autocmd StdinReadPre * let s:std
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | :vertical resize 60 | endif
-autocmd BufEnter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
 "==============================================================================
 " plugin configs
 "==============================================================================
-
-
-"Allow NERDTree to show hidden files"
-let NERDTreeShowHidden=1
-let g:python3_host_prog='/usr/bin/python3'
-
-" sync open file with NERDTree
-" " Check if NERDTree is open or active
-function! IsNERDTreeOpen()
-  return exists("t:NERDTreeBufName") && (bufwinnr(t:NERDTreeBufName) != -1)
-endfunction
-
-" Call NERDTreeFind iff NERDTree is active, current window contains a modifiable
-" file, and we're not in vimdiff
-function! SyncTree()
-  if &modifiable && IsNERDTreeOpen() && strlen(expand('%')) > 0 && !&diff
-    NERDTreeFind
-    wincmd p
-  endif
-endfunction
-
-" Highlight currently open buffer in NERDTree
-autocmd BufEnter * call SyncTree()
-
-" enable line numbers
-let NERDTreeShowLineNumbers=1
 
 let $FZF_DEFAULT_OPTS='--reverse'
 let g:fzf_layout = { 'window': { 'width': 0.8, 'height': 0.8 } }
