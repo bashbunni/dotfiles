@@ -17,6 +17,8 @@ set noswapfile
 set nu 
 set foldlevelstart=99
 set scrolloff=7
+"use y and p with the system clipboard
+set clipboard=unnamedplus
 
 "==================================================================================
 "plugins
@@ -30,9 +32,6 @@ call plug#begin('~/.config/nvim/autoload/')
 " phanviet/vim-monokai-pro rhysd/vim-color-spring-night arzg/vim-colors-xcode
 " kyoz/purify
 Plug 'arzg/vim-colors-xcode'
-
-"Syntax plugin - NOT IN USE
-"Plug 'vim-syntastic/syntastic'
 
 "Markdown preview
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }}
@@ -54,12 +53,6 @@ Plug 'phaazon/hop.nvim'
 "Comment Plugin
 Plug 'preservim/nerdcommenter'
 
-"Auto-format plugin
-Plug 'sbdchd/neoformat'
-
-"Code folding
-Plug 'tmhedberg/SimpylFold'
-
 "Haskell
 Plug 'neovimhaskell/haskell-vim'
 Plug 'alx741/vim-hindent'
@@ -79,9 +72,11 @@ Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
 Plug 'fannheyward/telescope-coc.nvim'
 
+"git diff
+Plug 'sindrets/diffview.nvim'
+
 "devicons
 Plug 'kyazdani42/nvim-web-devicons'
-
 call plug#end()
 
 "Aesthetic
@@ -108,9 +103,6 @@ nnoremap <leader>ne :Telescope file_browser<CR>
 nnoremap <leader>f :call CocAction('format')<CR>
 
 autocmd StdinReadPre * let s:std
-"what is this
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | :vertical resize 60 | endif
-
 "==============================================================================
 " plugin configs
 "==============================================================================
@@ -121,39 +113,6 @@ let g:fzf_layout = { 'window': { 'width': 0.8, 'height': 0.8 } }
 " Focus and redistribute split windows
 noremap ff :resize 100 <CR> <BAR> :vertical resize 220<CR>
 noremap fm <C-w>=
-
-" Use CTRL+c to copy to system clipboard
-noremap <C-c> "+y e
-" Use tab for trigger completion with characters ahead and navigate.
-" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
-" other plugin before putting this into your config.
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-
-" Use <c-space> to trigger completion.
-if has('nvim')
-  inoremap <silent><expr> <c-space> coc#refresh()
-else
-  inoremap <silent><expr> <c-@> coc#refresh()
-endif
-
-" Make <CR> auto-select the first completion item and notify coc.nvim to
-" format on enter, <cr> could be remapped by other vim plugin
-inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
-                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
-
-" Use `[g` and `]g` to navigate diagnostics
-" Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
-nmap <silent> [g <Plug>(coc-diagnostic-prev)
-nmap <silent> ]g <Plug>(coc-diagnostic-next)
 
 " Highlight the symbol and its references when holding the cursor.
 autocmd CursorHold * silent call CocActionAsync('highlight')
