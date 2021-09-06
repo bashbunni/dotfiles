@@ -95,7 +95,7 @@ source $ZSH/oh-my-zsh.sh
 # if [[ -n $SSH_CONNECTION ]]; then
 #   export EDITOR='vim'
 # else
-#   export EDITOR='mvim'
+export EDITOR='nvim'
 # fi
 
 # Compilation flags
@@ -121,3 +121,4 @@ alias config='nvim ~/.config/nvim/init.vim'
 alias luaconf='nvim ~/.config/nvim/lua/bashbunni.lua'
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+alias sourcetmux='tmux source ~/.tmux.conf'
