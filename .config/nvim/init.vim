@@ -31,7 +31,7 @@ call plug#begin('~/.config/nvim/autoload/')
 " dracula/dracula-theme, rakr/vim-one, gosukiwi/vim-atom-dark,
 " phanviet/vim-monokai-pro rhysd/vim-color-spring-night arzg/vim-colors-xcode
 " kyoz/purify
-Plug 'arzg/vim-colors-xcode'
+Plug 'jonathanfilip/vim-lucius'
 
 "Markdown preview
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }}
@@ -42,10 +42,6 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 "Language packs
 Plug 'sheerun/vim-polyglot'
-
-"Debugging
-"I can't actually debug in nvim yet... This is a WIP
-Plug 'puremourning/vimspector'
 
 "Nvim motions
 Plug 'phaazon/hop.nvim'
@@ -87,9 +83,7 @@ call plug#end()
 
 "Aesthetic
 "colorscheme spring-night 
-colorscheme xcodedarkhc 
-set background=dark
-
+colorscheme lucius
 "==============================================================================
 "key combos
 "==============================================================================
