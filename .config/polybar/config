@@ -11,6 +11,7 @@ purple     = #bd93f9
 cyan       = #8be9fd
 orange     = #ff5555
 pink       = #ff79c6
+grey = #8fa6a1
 
 [bar/top]
 monitor = ${env:MONITOR:}
@@ -33,7 +34,7 @@ fixed-center = true
 
 ; Colors
 background = ${colors.background}
-foreground = ${colors.foreground}
+foreground = ${colors.grey}
 
 ; Underline
 line-size  = 2
@@ -52,7 +53,7 @@ module-margin-left  = 0
 module-margin-right = 0
 
 ; Font
-font-0 = Roboto:size=10;3
+font-0 = Iosevka:size=10;3
 font-1 = Font Awesome:style=Regular:size=12;3
 
 ; Modules
@@ -94,7 +95,7 @@ ws-icon-default = 
 
 ; Focused label
 label-focused            = %icon%
-label-focused-foreground = ${colors.bloodofmyenemies}
+label-focused-foreground = ${colors.green}
 label-focused-padding    = 2
 
 ; Unfocused labels
@@ -126,9 +127,6 @@ bar-used-empty-foreground = #444444
 
 [module/weather]
 type = custom/script
-
-; Script
-; exec = /home/gabrielle/.config/polybar/scripts/weather.sh
 
 ; Update interval
 interval = 600
@@ -197,7 +195,7 @@ type = custom/text
 
 ; Label
 content            = 
-content-foreground = ${colors.foreground}
+; content-foreground = ${colors.foreground}
 content-padding    = 2
 
 ; Mouse click
@@ -208,7 +206,7 @@ type = custom/text
 
 ; Label
 content            = 
-content-foreground = ${colors.foreground}
+; content-foreground = ${colors.foreground}
 content-padding    = 2
 
 ; Mouse click
@@ -239,7 +237,7 @@ margin-bottom = 10
 [module/consumption]
 type = custom/script
 
-exec = /home/gabrielle/.config/polybar/power.sh
+exec = /home/bashbunni/.config/polybar/power.sh
 interval = 2
 
 [module/battery]
@@ -281,5 +279,3 @@ type = internal/cpu
 interval = 0.5
 format = <label> <ramp-coreload>
 label = CPU
-
-
