@@ -31,7 +31,8 @@ call plug#begin('~/.config/nvim/autoload/')
 " dracula/dracula-theme, rakr/vim-one, gosukiwi/vim-atom-dark,
 " phanviet/vim-monokai-pro rhysd/vim-color-spring-night arzg/vim-colors-xcode
 " kyoz/purify
-Plug 'jonathanfilip/vim-lucius'
+" Plug 'jonathanfilip/vim-lucius'
+Plug 'sonph/onehalf', { 'rtp': 'vim' }
 
 "Markdown preview
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }}
@@ -79,11 +80,17 @@ Plug 'folke/todo-comments.nvim'
 
 "devicons
 Plug 'kyazdani42/nvim-web-devicons'
+
+"rainbow brackets
+Plug 'frazrepo/vim-rainbow'
+
 call plug#end()
 
 "Aesthetic
 "colorscheme spring-night 
-colorscheme lucius
+"colorscheme lucius
+colorscheme onehalfdark
+let g:airline_theme='onehalfdark'
 "==============================================================================
 "key combos
 "==============================================================================
@@ -123,6 +130,9 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#left_alt_sep = '|'
 let g:airline#extensions#tabline#formatter = 'default'
+
+" Rainbow brackets
+let g:rainbow_active = 1
 
 "****************************************************
 "Markdown Preview Recommended Settings
