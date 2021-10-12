@@ -84,6 +84,13 @@ Plug 'kyazdani42/nvim-web-devicons'
 "rainbow brackets
 Plug 'frazrepo/vim-rainbow'
 
+"fullstack dev
+Plug 'pangloss/vim-javascript' "JS support
+Plug 'leafgarland/typescript-vim' "TS support
+Plug 'maxmellon/vim-jsx-pretty' "JS and JSX syntax
+Plug 'jparise/vim-graphql' "GraphQL syntax
+Plug 'mattn/emmet-vim'
+
 call plug#end()
 
 "Aesthetic
