@@ -37,15 +37,25 @@ Plug 'sonph/onehalf', { 'rtp': 'vim' }
 "Markdown preview
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }}
 
-"Autocomplete plugin
-"Also do :CocInstall coc-clangd coc-tsserver coc-eslint coc-json coc-prettier coc-css coc-python coc-java 
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-
 "Language packs
 Plug 'sheerun/vim-polyglot'
 
 "Nvim motions
 Plug 'phaazon/hop.nvim'
+
+"LSP autocomplete
+Plug 'hrsh7th/nvim-cmp'
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-path'
+Plug 'L3MON4D3/LuaSnip'
+Plug 'saadparwaiz1/cmp_luasnip'
+
+"File browsing
+Plug 'nvim-telescope/telescope-file-browser.nvim'
+
+"Native LSP
+Plug 'neovim/nvim-lspconfig'
 
 "Buffer navigation
 Plug 'vim-airline/vim-airline'
@@ -55,7 +65,7 @@ Plug 'neovimhaskell/haskell-vim'
 Plug 'alx741/vim-hindent'
 
 "Go
-Plug 'fatih/vim-go'
+"Plug 'fatih/vim-go'
 
 "Grammar checking because I can't english
 Plug 'rhysd/vim-grammarous'
@@ -67,13 +77,15 @@ Plug 'nvim-telescope/telescope.nvim'
 
 "Telescope
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
-Plug 'fannheyward/telescope-coc.nvim'
 
 "git diff
 Plug 'sindrets/diffview.nvim'
 
 "magit
 Plug 'TimUntersberger/neogit'
+
+"debugger
+"Plug 'puremourning/vimspector'
 
 "todo comments
 Plug 'folke/todo-comments.nvim'
@@ -130,7 +142,7 @@ noremap ff :resize 100 <CR> <BAR> :vertical resize 220<CR>
 noremap fm <C-w>=
 
 " Highlight the symbol and its references when holding the cursor.
-autocmd CursorHold * silent call CocActionAsync('highlight')
+"autocmd CursorHold * silent call CocActionAsync('highlight')
 
 " Buffer navigation
 let g:airline#extensions#tabline#enabled = 1
