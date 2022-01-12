@@ -10,7 +10,7 @@ fi
 
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
-export GOROOT=/usr/lib/go
+export GOROOT=/usr/local/go
 export GOPATH=$HOME/go
 export CARGO=$HOME/.cargo/bin
 export PATH=$PATH:$GOROOT/bin:$GOPATH/bin:$CARGO
