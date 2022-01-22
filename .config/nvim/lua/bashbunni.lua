@@ -1,3 +1,10 @@
+-- Aesthetic
+local catppuccin = require("catppuccin")
+catppuccin.setup {}
+vim.cmd[[colorscheme catppuccin]]
+
+require'nvim-treesitter.configs'.setup { ensure_installed = "maintained", highlight = { enable = true } }
+
 -- Native LSP Setup
 local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
 require'lspconfig'.gopls.setup{
@@ -14,6 +21,13 @@ require'lspconfig'.gopls.setup{
   vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, {buffer=0})
   end,
 } -- connect to server
+
+-- lualine
+require('lualine').setup{
+  options = {
+    theme = 'catppuccin'
+  }
+}
 
 -- LSP autocomplete
 vim.opt.completeopt={"menu", "menuone", "noselect"} -- setting vim values
