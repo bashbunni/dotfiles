@@ -30,9 +30,11 @@ call plug#begin('~/.config/nvim/autoload/')
 " My fave colour schemes:
 " dracula/dracula-theme, rakr/vim-one, gosukiwi/vim-atom-dark,
 " phanviet/vim-monokai-pro rhysd/vim-color-spring-night arzg/vim-colors-xcode
-" kyoz/purify
-" Plug 'jonathanfilip/vim-lucius'
-Plug 'sonph/onehalf', { 'rtp': 'vim' }
+" kyoz/purify 'jonathanfilip/vim-lucius'
+Plug 'catppuccin/nvim', {'as': 'catppuccin'}
+
+"Treesitter
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
 "Markdown preview
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }}
@@ -59,6 +61,7 @@ Plug 'neovim/nvim-lspconfig'
 
 "Buffer navigation
 Plug 'vim-airline/vim-airline'
+Plug 'nvim-lualine/lualine.nvim'
 
 "Haskell
 Plug 'neovimhaskell/haskell-vim'
@@ -93,9 +96,6 @@ Plug 'folke/todo-comments.nvim'
 "devicons
 Plug 'kyazdani42/nvim-web-devicons'
 
-"rainbow brackets
-Plug 'frazrepo/vim-rainbow'
-
 "fullstack dev
 Plug 'pangloss/vim-javascript' "JS support
 Plug 'leafgarland/typescript-vim' "TS support
@@ -105,12 +105,6 @@ Plug 'mattn/emmet-vim'
 
 call plug#end()
 
-"Aesthetic
-"colorscheme spring-night 
-"colorscheme lucius
-colorscheme onehalfdark
-let g:airline_theme='onehalfdark'
-"==============================================================================
 "key combos
 "==============================================================================
 
@@ -145,13 +139,11 @@ noremap fm <C-w>=
 "autocmd CursorHold * silent call CocActionAsync('highlight')
 
 " Buffer navigation
+" TODO
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#left_alt_sep = '|'
 let g:airline#extensions#tabline#formatter = 'default'
-
-" Rainbow brackets
-let g:rainbow_active = 1
 
 "****************************************************
 "Markdown Preview Recommended Settings

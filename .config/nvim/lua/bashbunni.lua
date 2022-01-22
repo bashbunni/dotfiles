@@ -11,6 +11,7 @@ require'lspconfig'.gopls.setup{
   vim.keymap.set("n", "<leader>dk", vim.diagnostic.goto_prev, {buffer=0})
   vim.keymap.set("n", "<leader>dl", "<cmd>Telescope diagnostics<cr>", {buffer=0})
   vim.keymap.set("n", "<leader>r", vim.lsp.buf.rename, {buffer=0})
+  vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, {buffer=0})
   end,
 } -- connect to server
 
