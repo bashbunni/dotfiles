@@ -117,11 +117,11 @@ nnoremap <leader>bp :bprevious<CR>
 nnoremap <leader>bf :bfirst<CR>
 nnoremap <leader>bl :blast<CR>
 
-nnoremap ccd :CocList diagnostics<CR>
+"nnoremap ccd :CocList diagnostics<CR>
 "Other
 nnoremap <leader><CR> :source ~/.config/nvim/init.vim<CR>
 nnoremap <leader>ne :Telescope file_browser<CR>
-nnoremap <leader>f :call CocAction('format')<CR>
+"nnoremap <leader>f :call CocAction('format')<CR>
 
 autocmd StdinReadPre * let s:std
 "==============================================================================
