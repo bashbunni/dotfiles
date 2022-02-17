@@ -5,11 +5,22 @@ vim.cmd[[colorscheme catppuccin]]
 
 require'nvim-treesitter.configs'.setup { ensure_installed = "maintained", highlight = { enable = true } }
 
+vim.g.glow_binary_path = vim.env.HOME .. "/bin"
+vim.g.glow_use_pager = true
+vim.g.glow_border = "shadow"
+vim.keymap.set("n", "<leader>p", "<cmd>Glow<cr>")
+
 -- Native LSP Setup
 local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
 require'lspconfig'.gopls.setup{
   capabilities = capabilities,
   on_attach = function() 
+  vim.cmd[[
+    augroup lsp_buf_format
+    au! BufWritePre <buffer>
+    autocmd BufWritePre <buffer> :lua vim.lsp.buf.formatting_sync()
+    augroup END
+    ]]
   vim.keymap.set("n", "K", vim.lsp.buf.hover, {buffer=0})
   vim.keymap.set("n", "gd", vim.lsp.buf.definition, {buffer=0})
   vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, {buffer=0})
@@ -21,7 +32,6 @@ require'lspconfig'.gopls.setup{
   vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, {buffer=0})
   end,
 } -- connect to server
-
 -- lualine
 require('lualine').setup{
   options = {

@@ -95,7 +95,7 @@ echo "$(cat /home/bashbunni/banner)" | lolcat
 # figlet -f standard "bashbunni" | lolcat
 [ -f "/home/bashbunni/.ghcup/env" ] && source "/home/bashbunni/.ghcup/env" # ghcup-env
 
-alias dotfiles='/usr/bin/git --git-dir=/home/bashbunni/.cfg/ --work-tree=/home/bashbunni'
+alias dotfiles='/usr/bin/git --git-dir=$HOME/.cfg --work-tree=$HOME'
 alias stream='cd ~/Documents/Hobbies/'
 alias bb='cd ~/Documents/bashbunni'
 alias notes='cd ~/Documents/Hobbies/dev-notebook'
