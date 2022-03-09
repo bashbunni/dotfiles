@@ -25,9 +25,9 @@ export PATH="$HOME/.npm/bin:$PATH"
 # Aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-echo "$(cat /home/bashbunni/banner)" | lolcat
+echo "$(cat $HOME/banner)" | lolcat
 # figlet -f standard "bashbunni" | lolcat
-[ -f "/home/bashbunni/.ghcup/env" ] && source "/home/bashbunni/.ghcup/env" # ghcup-env
+[ -f "$HOME/.ghcup/env" ] && source "$HOME/.ghcup/env" # ghcup-env
 
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.cfg --work-tree=$HOME'
 alias stream='cd ~/Documents/Hobbies/'

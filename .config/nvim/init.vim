@@ -37,7 +37,8 @@ Plug 'catppuccin/nvim', {'as': 'catppuccin'}
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
 "Markdown preview
-Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }}
+Plug 'ellisonleao/glow.nvim'
+"Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }}
 
 "Language packs
 Plug 'sheerun/vim-polyglot'
@@ -60,15 +61,21 @@ Plug 'nvim-telescope/telescope-file-browser.nvim'
 Plug 'neovim/nvim-lspconfig'
 
 "Buffer navigation
-Plug 'vim-airline/vim-airline'
 Plug 'nvim-lualine/lualine.nvim'
+
+"Go
+"Plug 'fatih/vim-go'
 
 "Haskell
 Plug 'neovimhaskell/haskell-vim'
 Plug 'alx741/vim-hindent'
 
-"Go
-"Plug 'fatih/vim-go'
+"debugging
+Plug 'mfussenegger/nvim-dap'
+Plug 'leoluz/nvim-dap-go'
+Plug 'rcarriga/nvim-dap-ui'
+Plug 'theHamsta/nvim-dap-virtual-text'
+Plug 'nvim-telescope/telescope-dap.nvim'
 
 "Grammar checking because I can't english
 Plug 'rhysd/vim-grammarous'
@@ -86,9 +93,6 @@ Plug 'sindrets/diffview.nvim'
 
 "magit
 Plug 'TimUntersberger/neogit'
-
-"debugger
-"Plug 'puremourning/vimspector'
 
 "todo comments
 Plug 'folke/todo-comments.nvim'
@@ -117,19 +121,23 @@ nnoremap <leader>bp :bprevious<CR>
 nnoremap <leader>bf :bfirst<CR>
 nnoremap <leader>bl :blast<CR>
 
-"nnoremap ccd :CocList diagnostics<CR>
+nnoremap ccd :CocList diagnostics<CR>
 "Other
 nnoremap <leader><CR> :source ~/.config/nvim/init.vim<CR>
 nnoremap <leader>ne :Telescope file_browser<CR>
-"nnoremap <leader>f :call CocAction('format')<CR>
+nnoremap <leader>f :call CocAction('format')<CR>
 
 autocmd StdinReadPre * let s:std
 "==============================================================================
 " plugin configs
 "==============================================================================
+"Go - format on save
+autocmd BufWritePre *.go lua vim.lsp.buf.formatting()
 
+"fzf
 let $FZF_DEFAULT_OPTS='--reverse'
 let g:fzf_layout = { 'window': { 'width': 0.8, 'height': 0.8 } }
+let g:glow_use_pager = v:false
 
 " Focus and redistribute split windows
 noremap ff :resize 100 <CR> <BAR> :vertical resize 220<CR>
