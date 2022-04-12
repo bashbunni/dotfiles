@@ -59,6 +59,7 @@ Plug 'nvim-telescope/telescope-file-browser.nvim'
 
 "Native LSP
 Plug 'neovim/nvim-lspconfig'
+Plug 'williamboman/nvim-lsp-installer'
 
 "Buffer navigation
 Plug 'nvim-lualine/lualine.nvim'
@@ -254,6 +255,7 @@ nnoremap <C-p> :MarkdownPreview
 " will find .lua file that exist at runtime
 " should be unique
 lua require("bashbunni") 
+lua require("debugging") 
 nnoremap <C-_> <cmd>lua require("bashbunni").curr_buf() <cr>
 " nnoremap <C-_> :Telescope current_buffer_fuzzy_find sorting_strategy=ascending prompt_position=top <cr> 
 " nnoremap <C-_> <cmd>lua require('telescope.builtin').current_buffer_fuzzy_find({sorting_strategy="ascending", prompt_position="top"})<cr>
