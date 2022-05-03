@@ -51,21 +51,17 @@ Plug 'hrsh7th/nvim-cmp'
 Plug 'hrsh7th/cmp-nvim-lsp'
 Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-path'
+Plug 'hrsh7th/nvim-cmp'
 Plug 'L3MON4D3/LuaSnip'
 Plug 'saadparwaiz1/cmp_luasnip'
+Plug 'neovim/nvim-lspconfig'
+Plug 'williamboman/nvim-lsp-installer'
 
 "File browsing
 Plug 'nvim-telescope/telescope-file-browser.nvim'
 
-"Native LSP
-Plug 'neovim/nvim-lspconfig'
-Plug 'williamboman/nvim-lsp-installer'
-
 "Buffer navigation
 Plug 'nvim-lualine/lualine.nvim'
-
-"Go
-"Plug 'fatih/vim-go'
 
 "Haskell
 Plug 'neovimhaskell/haskell-vim'
@@ -126,14 +122,11 @@ nnoremap ccd :CocList diagnostics<CR>
 "Other
 nnoremap <leader><CR> :source ~/.config/nvim/init.vim<CR>
 nnoremap <leader>ne :Telescope file_browser<CR>
-nnoremap <leader>f :call CocAction('format')<CR>
 
 autocmd StdinReadPre * let s:std
 "==============================================================================
 " plugin configs
 "==============================================================================
-"Go - format on save
-autocmd BufWritePre *.go lua vim.lsp.buf.formatting()
 
 "fzf
 let $FZF_DEFAULT_OPTS='--reverse'
@@ -146,13 +139,6 @@ noremap fm <C-w>=
 
 " Highlight the symbol and its references when holding the cursor.
 "autocmd CursorHold * silent call CocActionAsync('highlight')
-
-" Buffer navigation
-" TODO
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#left_sep = ' '
-let g:airline#extensions#tabline#left_alt_sep = '|'
-let g:airline#extensions#tabline#formatter = 'default'
 
 "****************************************************
 "Markdown Preview Recommended Settings
@@ -260,4 +246,4 @@ nnoremap <C-_> <cmd>lua require("bashbunni").curr_buf() <cr>
 " nnoremap <C-_> :Telescope current_buffer_fuzzy_find sorting_strategy=ascending prompt_position=top <cr> 
 " nnoremap <C-_> <cmd>lua require('telescope.builtin').current_buffer_fuzzy_find({sorting_strategy="ascending", prompt_position="top"})<cr>
 nnoremap <F4> :lua package.loaded.bashbunni = nil <cr>:source ~/.config/nvim/init.vim <cr> 
-nnoremap <leader>sf :Telescope find_files cwd=~/Documents/Hobbies<cr>
+nnoremap <leader>lg :Telescope live_grep<cr>

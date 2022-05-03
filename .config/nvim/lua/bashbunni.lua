@@ -11,6 +11,35 @@ vim.g.glow_border = "shadow"
 vim.keymap.set("n", "<leader>p", "<cmd>Glow<cr>")
 
 -- Native LSP Setup
+-- Global setup.
+local cmp = require'cmp'
+cmp.setup({
+  snippet = {
+    expand = function(args)
+      require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+    end,
+  },
+  mapping = {
+    ['<C-d>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
+    ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
+    ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
+    ['<C-e>'] = cmp.mapping({
+      i = cmp.mapping.abort(),
+      c = cmp.mapping.close(),
+    }),
+    -- Accept currently selected item. If none selected, `select` first item.
+    -- Set `select` to `false` to only confirm explicitly selected items.
+    ['<CR>'] = cmp.mapping.confirm({ select = true }),
+  },
+  sources = cmp.config.sources({
+    { name = 'nvim_lsp' },
+    { name = 'luasnip' }, -- For luasnip users.
+  }, {
+    { name = 'buffer' },
+  })
+})
+
+local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
 
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
@@ -50,6 +79,14 @@ local on_attach = function(client, bufnr)
 	buf_set_keymap("n", "<leader>D", "<cmd>Telescope lsp_type_definitions<CR>", opts)
 	buf_set_keymap("n", "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
 	buf_set_keymap("n", "<leader>ca", "<cmd>Telescope lsp_code_actions<CR>", opts)
+	vim.keymap.set("n", "gd", vim.lsp.buf.definition, {buffer=0})
+	vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, {buffer=0})
+	vim.keymap.set("n", "gi", vim.lsp.buf.implementation, {buffer=0})
+	vim.keymap.set("n", "<leader>dj", vim.diagnostic.goto_next, {buffer=0})
+	vim.keymap.set("n", "<leader>dk", vim.diagnostic.goto_prev, {buffer=0})
+	vim.keymap.set("n", "<leader>dl", "<cmd>Telescope diagnostics<cr>", {buffer=0})
+	vim.keymap.set("n", "<leader>r", vim.lsp.buf.rename, {buffer=0})
+	vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, {buffer=0})
 	-- buf_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
 	-- buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
 	-- buf_set_keymap('n', '<leader>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
