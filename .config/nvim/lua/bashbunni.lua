@@ -3,7 +3,7 @@ local catppuccin = require("catppuccin")
 catppuccin.setup {}
 vim.cmd[[colorscheme catppuccin]]
 
-require'nvim-treesitter.configs'.setup { ensure_installed = "maintained", highlight = { enable = true } }
+require'nvim-treesitter.configs'.setup { ensure_installed = "all", highlight = { enable = true } }
 
 vim.g.glow_binary_path = vim.env.HOME .. "/bin"
 vim.g.glow_use_pager = true
