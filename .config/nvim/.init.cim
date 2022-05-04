@@ -34,7 +34,7 @@ call plug#begin('~/.config/nvim/autoload/')
 Plug 'catppuccin/nvim', {'as': 'catppuccin'}
 
 "Treesitter
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+"Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
 "Markdown preview
 Plug 'ellisonleao/glow.nvim'
