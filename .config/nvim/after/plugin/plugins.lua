@@ -16,6 +16,7 @@ use {'catppuccin/nvim', as = 'catppuccin'}
 
 --Treesitter
 -- use {'nvim-treesitter/nvim-treesitter', run = ':TSUpdate'}
+use 'williamboman/mason.nvim'
 
 --Markdown preview
 use 'ellisonleao/glow.nvim'
