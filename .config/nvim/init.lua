@@ -28,6 +28,7 @@ if not ok then return end
 catppuccin.setup {}
 vim.cmd[[colorscheme catppuccin]]
 
+require'nvim-web-devicons'.setup{}
 -- require'nvim-treesitter.configs'.setup { ensure_installed = "all", highlight = { enable = true } }
 
 -- keymaps
