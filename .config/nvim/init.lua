@@ -1,20 +1,25 @@
-vim.o.ma = true
-vim.o.mouse = a
-vim.o.cursorline = true
-vim.o.tabstop = 4
-vim.o.shiftwidth = 4
-vim.o.softtabstop = 4
-vim.o.expandtab = true
-vim.o.autoread = true
-vim.o.nu = true 
-vim.o.foldlevelstart = 99
-vim.o.scrolloff = 7
-vim.o.backup = false
-vim.o.writebackup = false
-vim.o.swapfile = false
--- use y and p with the system clipboard
-vim.o.clipboard = "unnamedplus"
+local options = {
+ma = true,
+mouse = "a",
+cursorline = true,
+tabstop = 4,
+shiftwidth = 4,
+softtabstop = 4,
+expandtab = true,
+autoread = true,
+nu = true,
+foldlevelstart = 99,
+scrolloff = 7,
+backup = false,
+writebackup = false,
+swapfile = false,
+clipboard = "unnamedplus", -- use y and p with the system clipboard
+}
 vim.g.mapleader = " "
+
+for k, v in pairs(options) do  -- Table iteration.
+  vim.opt[k] = v
+end
 
 P = function(v)
     print(vim.inspect(v))
