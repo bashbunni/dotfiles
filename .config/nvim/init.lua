@@ -29,6 +29,73 @@ catppuccin.setup {}
 vim.cmd[[colorscheme catppuccin]]
 
 require'nvim-web-devicons'.setup{}
+
+require('lualine').setup {
+  options = {
+    icons_enabled = true,
+    theme = 'auto',
+    component_separators = { left = '', right = ''},
+    section_separators = { left = '', right = ''},
+    disabled_filetypes = {
+      statusline = {},
+      winbar = {},
+    },
+    ignore_focus = {},
+    always_divide_middle = true,
+    globalstatus = true,
+    refresh = {
+      statusline = 1000,
+      tabline = 1000,
+      winbar = 1000,
+    }
+  },
+  sections = {
+    lualine_a = {'mode'},
+    lualine_b = {'branch', 'diff'},
+    lualine_c = {'buffers'},
+    lualine_x = {'tabs'},
+	lualine_y = {'progress'},
+    lualine_z = {
+    {
+      'diagnostics',
+
+      -- Table of diagnostic sources, available sources are:
+      --   'nvim_lsp', 'nvim_diagnostic', 'nvim_workspace_diagnostic', 'coc', 'ale', 'vim_lsp'.
+      -- or a function that returns a table as such:
+      --   { error=error_cnt, warn=warn_cnt, info=info_cnt, hint=hint_cnt }
+      sources = { 'nvim_diagnostic', 'nvim_lsp' },
+
+      -- Displays diagnostics for the defined severity types
+      sections = { 'error', 'warn', 'info', 'hint' },
+
+      diagnostics_color = {
+        -- Same values as the general color option can be used here.
+        error = 'DiagnosticError', -- Changes diagnostics' error color.
+        warn  = 'DiagnosticWarn',  -- Changes diagnostics' warn color.
+        info  = 'DiagnosticInfo',  -- Changes diagnostics' info color.
+        hint  = 'DiagnosticHint',  -- Changes diagnostics' hint color.
+      },
+      symbols = {error = 'E', warn = 'W', info = 'I', hint = 'H'},
+      colored = true,           -- Displays diagnostics status in color if set to true.
+      update_in_insert = true, -- Update diagnostics in insert mode.
+      always_visible = true,   -- Show diagnostics even if there are none.
+    }
+  }
+  },
+  inactive_sections = {
+    lualine_a = {},
+    lualine_b = {},
+    lualine_c = {'filename'},
+    lualine_x = {'location'},
+    lualine_y = {},
+    lualine_z = {}
+  },
+  tabline = {},
+  winbar = {},
+  inactive_winbar = {},
+  extensions = {}
+}
+
 -- require'nvim-treesitter.configs'.setup { ensure_installed = "all", highlight = { enable = true } }
 
 -- keymaps
@@ -38,6 +105,13 @@ vim.g.glow_border = "shadow"
 vim.keymap.set("n", "<leader>p", "<cmd>Glow<cr>")
 vim.keymap.set("n", "<leader>ff", "<cmd>Telescope current_buffer_fuzzy_find sorting_strategy=ascending prompt_position=top<CR>")
 vim.keymap.set("n", "<leader>lg", "<cmd>Telescope live_grep<CR>")
+
+-- navigation
+vim.keymap.set("n", "L", "<cmd>bnext<CR>")
+vim.keymap.set("n", "H", "<cmd>bprevious<CR>")
+vim.keymap.set("n", "J", "<cmd>tabNext<CR>")
+vim.keymap.set("n", "K", "<cmd>tabprevious<CR>")
+vim.keymap.set("n", "F", "<cmd>HopPattern<CR>")
 
 -- Native LSP Setup
 -- Global setup.

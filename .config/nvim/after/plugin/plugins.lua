@@ -28,7 +28,22 @@ use({
 use 'sheerun/vim-polyglot'
 
 --Nvim motions
-use 'phaazon/hop.nvim'
+use {
+  'phaazon/hop.nvim',
+  branch = 'v2', -- optional but strongly recommended
+  config = function()
+    -- you can configure Hop the way you like here; see :h hop-config
+    require'hop'.setup { keys = 'etovxqpdygfblzhckisuran' }
+  end
+}
+use {
+  'phaazon/mind.nvim',
+  branch = 'v2.2',
+  requires = { 'nvim-lua/plenary.nvim' },
+  config = function()
+    require'mind'.setup()
+  end
+}
 
 --LSP autocomplete
 use 'hrsh7th/nvim-cmp'
@@ -73,9 +88,6 @@ use 'sindrets/diffview.nvim'
 
 --magit
 use 'TimUntersberger/neogit'
-
---todo comments
-use 'folke/todo-comments.nvim'
 
 --devicons
 use 'kyazdani42/nvim-web-devicons'
