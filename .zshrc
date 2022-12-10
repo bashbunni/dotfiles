@@ -29,7 +29,7 @@ echo "$(cat $HOME/banner)" | lolcat
 # figlet -f standard "bashbunni" | lolcat
 [ -f "$HOME/.ghcup/env" ] && source "$HOME/.ghcup/env" # ghcup-env
 
-alias dotfiles='/usr/bin/git --git-dir=$HOME/.cfg --work-tree=$HOME'
+alias dotfiles='/usr/bin/git --git-dir=$HOME/.cfg/.git --work-tree=$HOME'
 alias stream='cd ~/Documents/Hobbies/'
 alias bb='cd ~/Documents/bashbunni'
 alias notes='cd ~/Documents/Hobbies/dev-notebook'
@@ -38,3 +38,12 @@ alias luaconf='nvim ~/.config/nvim/lua/bashbunni.lua'
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 alias sourcetmux='tmux source ~/.tmux.conf'
+
+alias theme="kitty +kitten themes --reload-in=all" # then add theme name
+alias icat="kitty +kitten icat" # then add image name
+alias connect="kitty +kitten ssh"
+alias lint="golangci-lint run"
+
+# study stream aliases
+alias work="timer 45m"
+alias break="timer 7m"
