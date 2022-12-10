@@ -13,7 +13,7 @@ vim.o.backup = false
 vim.o.writebackup = false
 vim.o.swapfile = false
 -- use y and p with the system clipboard
-vim.o.clipboard = "unnamedplus"
+vim.opt.clipboard = "unnamedplus"
 vim.g.mapleader = " "
 
 local keymap = function(tbl)
@@ -53,16 +53,30 @@ end
 -- pcall catches errors if the plugin doesn't load
 local ok, catppuccin = pcall(require, "catppuccin")
 if not ok then return end
-catppuccin.setup {}
+vim.g.catppuccin_flavour = "macchiato"
+catppuccin.setup()
 vim.cmd[[colorscheme catppuccin]]
 
--- require'nvim-treesitter.configs'.setup { ensure_installed = "all", highlight = { enable = true } }
 
+local ok, treesitter = pcall(require, "nvim-treesitter.configs")
+if not ok then return end
+treesitter.setup { ensure_installed = "all", highlight = { enable = true } }
+
+-- keymaps
 vim.g.glow_binary_path = vim.env.HOME .. "/bin"
 vim.g.glow_use_pager = true
 vim.g.glow_border = "shadow"
 vim.keymap.set("n", "<leader>p", "<cmd>Glow<cr>")
+nmap{"<C-f>", "<cmd>Telescope current_buffer_fuzzy_find sorting_strategy=ascending prompt_position=top<CR>"}
+nmap{"<leader>lg", "<cmd>Telescope live_grep<CR>"}
+nmap{"<leader>dl", "<cmd>Telescope diagnostics<cr>"}
 
+-- navigation
+nmap{"L", "<cmd>bnext<cr>"}
+nmap{"H", "<cmd>bprevious<cr>"}
+nmap{"J", "<cmd>tabNext<cr>"}
+nmap{"K", "<cmd>tabPrevious<cr>"}
+nmap{"F", "<cmd>HopPattern<cr>"}
 
 -- Native LSP Setup
 -- Global setup.
@@ -93,7 +107,7 @@ snippet = {
   })
 })
 
-local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
 
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
@@ -108,11 +122,7 @@ lsp_installer.settings({
     }
 })
 
-
-nmap{"C-f", "<cmd>Telescope current_buffer_fuzzy_find sorting_strategy=ascending prompt_position=top<CR>"}
-nmap{"<leader>lg", "<cmd>Telescope live_grep<CR>"}
-
-local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
 local on_attach = function(client, bufnr)
 
 	local function buf_set_keymap(...)
@@ -134,29 +144,13 @@ local on_attach = function(client, bufnr)
 	buf_set_keymap("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
 	buf_set_keymap("n", "<leader>D", "<cmd>Telescope lsp_type_definitions<CR>", opts)
 	buf_set_keymap("n", "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
-	buf_set_keymap("n", "<leader>ca", "<cmd>Telescope lsp_code_actions<CR>", opts)
-	vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, {buffer=0})
-	vim.keymap.set("n", "gi", vim.lsp.buf.implementation, {buffer=0})
-	vim.keymap.set("n", "<leader>dj", vim.diagnostic.goto_next, {buffer=0})
-	vim.keymap.set("n", "<leader>dk", vim.diagnostic.goto_prev, {buffer=0})
-	vim.keymap.set("n", "<leader>dl", "<cmd>Telescope diagnostics<cr>", {buffer=0})
-	vim.keymap.set("n", "<leader>r", vim.lsp.buf.rename, {buffer=0})
-	vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, {buffer=0})
-	-- buf_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
-	-- buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-	-- buf_set_keymap('n', '<leader>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
-	-- buf_set_keymap('n', '<leader>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-	-- buf_set_keymap('n', '<leader>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-	-- buf_set_keymap('n', '<leader>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-	-- buf_set_keymap('n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
-	-- buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-	-- buf_set_keymap('n', '<leader>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
-	-- buf_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
-	-- buf_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
-	-- buf_set_keymap('n', '<leader>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
-	-- buf_set_keymap("n", "<leader>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
+	buf_set_keymap('n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts) 
+	buf_set_keymap("n", "gt", "<cmd>lua vim.lsp.buf.type_definition()<CR>", opts)
+	buf_set_keymap("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts)
+	buf_set_keymap("n", "<leader>dj", "<cmd>lua vim.diagnostic.goto_next()<CR>", opts)
+	buf_set_keymap("n", "<leader>dk", "<cmd>lua vim.diagnostic.goto_prev()<CR>", opts)
+	buf_set_keymap("n", "<leader>r", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
 
-	if client.server_capabilities.document_formatting then
 		vim.cmd([[
 			augroup formatting
 				autocmd! * <buffer>
@@ -164,10 +158,8 @@ local on_attach = function(client, bufnr)
 				autocmd BufWritePre <buffer> lua OrganizeImports(1000)
 			augroup END
 		]])
-	end
 
 	-- Set autocommands conditional on server_capabilities
-	if client.server_capabilities.document_highlight then
 		vim.cmd([[
 			augroup lsp_document_highlight
 				autocmd! * <buffer>
@@ -175,7 +167,6 @@ local on_attach = function(client, bufnr)
 				autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
 			augroup END
 		]])
-	end
 end
 
 lsp_installer.setup{}
@@ -192,7 +183,8 @@ lspconfig.gopls.setup {
 		debounce_text_changes = 150,
 	},
 }
-lspconfig.golint.setup {
+
+lspconfig.golangci_lint_ls.setup {
 	capabilities = capabilities,
 	on_attach = on_attach,
 	settings = {
@@ -225,7 +217,30 @@ end
 -- lualine
 require('lualine').setup{
   options = {
-    theme = 'catppuccin'
+    theme = 'auto',
+  },
+  sections = {
+    lualine_a = {'mode'},
+    lualine_b = {'branch', 'diff'},
+    lualine_c = {'buffers'},
+    lualine_x = {'tabs'},
+    lualine_y = {'progress'},
+    lualine_z = {
+      'diagnostics',
+      sources = {'nvim_diagnostic', 'nvim_lsp'},
+      sections = {'error', 'warn', 'info', 'hint'},
+      diagnostics_color = {
+        -- Same values as the general color option can be used here.
+        error = 'DiagnosticError', -- Changes diagnostics' error color.
+        warn  = 'DiagnosticWarn',  -- Changes diagnostics' warn color.
+        info  = 'DiagnosticInfo',  -- Changes diagnostics' info color.
+        hint  = 'DiagnosticHint',  -- Changes diagnostics' hint color.
+      },
+      symbols = {error = 'E', warn = 'W', info = 'I', hint = 'H'},
+      colored = true,           -- Displays diagnostics status in color if set to true.
+      update_in_insert = false, -- Update diagnostics in insert mode.
+      always_visible = false,   -- Show diagnostics even if there are none.
+    },
   }
 }
 

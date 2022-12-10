@@ -15,16 +15,30 @@ use 'wbthomason/packer.nvim'
 use {'catppuccin/nvim', as = 'catppuccin'}
 
 --Treesitter
--- use {'nvim-treesitter/nvim-treesitter', run = ':TSUpdate'}
+use {'nvim-treesitter/nvim-treesitter', run = ':TSUpdate'}
+use 'williamboman/mason.nvim'
 
 --Markdown preview
 use 'ellisonleao/glow.nvim'
+use 'simrat39/symbols-outline.nvim'
+-- install without yarn or npm
+use({
+    "iamcco/markdown-preview.nvim",
+    run = function() vim.fn["mkdp#util#install"]() end,
+})
 
 --Language packs
 use 'sheerun/vim-polyglot'
 
 --Nvim motions
-use 'phaazon/hop.nvim'
+use {
+  'phaazon/hop.nvim',
+  branch = 'v2',
+  requires = {'nvim-lua/plenary.nvim'},
+  config = function()
+    require'hop'.setup{ keys = 'etovxpqdgfblzhckisuran'}
+  end
+}
 
 --LSP autocomplete
 use 'hrsh7th/nvim-cmp'
