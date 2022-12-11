@@ -13,8 +13,8 @@ export PATH=$PATH:$GOROOT/bin:$GOPATH/bin:$CARGO
 ZSH_THEME="powerlevel10k/powerlevel10k"
 POWERLEVEL9K_MODE="nerdfont-complete"
 # Uncomment the following line to enable command auto-correction.
-ENABLE_CORRECTION="true"
-plugins=(git zsh-autosuggestions zsh-syntax-highlighting)
+# ENABLE_CORRECTION="true"
+# plugins=(git zsh-autosuggestions zsh-syntax-highlighting)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -23,18 +23,12 @@ export EDITOR='nvim'
 export PATH="$HOME/.npm/bin:$PATH"
 
 # Aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
 echo "$(cat $HOME/banner)" | lolcat
 # figlet -f standard "bashbunni" | lolcat
 [ -f "$HOME/.ghcup/env" ] && source "$HOME/.ghcup/env" # ghcup-env
 
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.cfg/.git --work-tree=$HOME'
-alias stream='cd ~/Documents/Hobbies/'
-alias bb='cd ~/Documents/bashbunni'
-alias notes='cd ~/Documents/Hobbies/dev-notebook'
-alias config='nvim ~/.config/nvim/init.vim'
-alias luaconf='nvim ~/.config/nvim/lua/bashbunni.lua'
+
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 alias sourcetmux='tmux source ~/.tmux.conf'
