@@ -15,6 +15,13 @@ cmp.setup({
       else
         fallback()
       end
+    end,
+    ['<CR>'] = function(fallback)
+      if cmp.visible() then
+        cmp.confirm()
+      else
+        fallback()
+      end
     end
   },
 
