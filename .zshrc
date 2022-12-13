@@ -39,5 +39,5 @@ alias connect="kitty +kitten ssh"
 alias lint="golangci-lint run"
 
 # study stream aliases
-alias work="timer 45m"
-alias break="timer 7m"
+alias work="echo 'we are working 🎅' | lolcat && timer 45m"
+alias break="echo 'happy break time! ⛄' | lolcat && timer 10m"
