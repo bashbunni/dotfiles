@@ -43,3 +43,7 @@ nmap{"<leader>dl", "<cmd>Telescope diagnostics<cr>"}
 nmap{"L", "<cmd>bnext<cr>"}
 nmap{"H", "<cmd>bprevious<cr>"}
 nmap{"F", "<cmd>HopPattern<cr>"}
+
+-- festivities
+nmap{"<leader>;", "<cmd>lua require('duck').hatch('🎅', 1)<cr>"}
+nmap{"<leader>'", "<cmd>lua require('duck').cook()<cr>"}

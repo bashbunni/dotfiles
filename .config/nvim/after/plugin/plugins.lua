@@ -11,89 +11,100 @@ vim.cmd([[
 ]])
 
 return require('packer').startup(function(use)
-use 'wbthomason/packer.nvim'
-use {'catppuccin/nvim', as = 'catppuccin'}
+  use 'wbthomason/packer.nvim'
+  use { 'catppuccin/nvim', as = 'catppuccin' }
 
---Treesitter
-use {'nvim-treesitter/nvim-treesitter', run = ':TSUpdate'}
-use 'williamboman/mason.nvim'
+  --Treesitter
+  use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
+  use 'williamboman/mason.nvim'
 
---Markdown preview
-use 'ellisonleao/glow.nvim'
-use 'simrat39/symbols-outline.nvim'
--- install without yarn or npm
-use({
+  --Markdown preview
+  use 'ellisonleao/glow.nvim'
+  use 'simrat39/symbols-outline.nvim'
+  -- install without yarn or npm
+  use({
     "iamcco/markdown-preview.nvim",
     run = function() vim.fn["mkdp#util#install"]() end,
-})
+  })
 
---Language packs
-use 'sheerun/vim-polyglot'
+  --Language packs
+  use 'sheerun/vim-polyglot'
 
---Nvim motions
-use {
-  'phaazon/hop.nvim',
-  branch = 'v2',
-  requires = {'nvim-lua/plenary.nvim'},
-  config = function()
-    require'hop'.setup{ keys = 'etovxpqdgfblzhckisuran'}
-  end
-}
+  --Nvim motions
+  use {
+    'phaazon/hop.nvim',
+    branch = 'v2',
+    requires = { 'nvim-lua/plenary.nvim' },
+    config = function()
+      require 'hop'.setup { keys = 'etovxpqdgfblzhckisuran' }
+    end
+  }
 
---LSP autocomplete
-use 'hrsh7th/nvim-cmp'
-use 'hrsh7th/cmp-nvim-lsp'
-use 'hrsh7th/cmp-buffer'
-use 'hrsh7th/cmp-path'
-use 'L3MON4D3/LuaSnip'
-use 'saadparwaiz1/cmp_luasnip'
-use 'neovim/nvim-lspconfig'
-use 'williamboman/nvim-lsp-installer'
+  --LSP autocomplete
+  use 'hrsh7th/nvim-cmp'
+  use 'hrsh7th/cmp-nvim-lsp'
+  use 'hrsh7th/cmp-buffer'
+  use 'hrsh7th/cmp-path'
+  use 'L3MON4D3/LuaSnip'
+  use 'saadparwaiz1/cmp_luasnip'
+  use 'neovim/nvim-lspconfig'
 
---File browsing
-use 'nvim-telescope/telescope-file-browser.nvim'
+  -- LSP Saga ????
+  use({
+    "glepnir/lspsaga.nvim",
+    branch = "main",
+    config = function()
+      require('lspsaga').setup({})
+    end,
+  })
 
---Buffer navigation
-use 'nvim-lualine/lualine.nvim'
+  --File browsing
+  use 'nvim-telescope/telescope-file-browser.nvim'
 
---Haskell
-use 'neovimhaskell/haskell-vim'
-use 'alx741/vim-hindent'
+  --Buffer navigation
+  use 'nvim-lualine/lualine.nvim'
 
---debugging
-use 'mfussenegger/nvim-dap'
-use 'leoluz/nvim-dap-go'
-use 'rcarriga/nvim-dap-ui'
-use 'theHamsta/nvim-dap-virtual-text'
-use 'nvim-telescope/telescope-dap.nvim'
+  --Haskell
+  use 'neovimhaskell/haskell-vim'
+  use 'alx741/vim-hindent'
 
---Grammar checking because I can't english
-use 'rhysd/vim-grammarous'
+  --debugging
+  use 'mfussenegger/nvim-dap'
+  use 'leoluz/nvim-dap-go'
+  use 'rcarriga/nvim-dap-ui'
+  use 'theHamsta/nvim-dap-virtual-text'
+  use 'nvim-telescope/telescope-dap.nvim'
 
---Telescope Requirements
-use 'nvim-lua/popup.nvim'
-use 'nvim-lua/plenary.nvim'
-use 'nvim-telescope/telescope.nvim'
+  --Grammar checking because I can't english
+  use 'rhysd/vim-grammarous'
 
---Telescope
-use {'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
+  --Telescope Requirements
+  use 'nvim-lua/popup.nvim'
+  use 'nvim-lua/plenary.nvim'
+  use 'nvim-telescope/telescope.nvim'
 
---git diff
-use 'sindrets/diffview.nvim'
+  --Telescope
+  use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
 
---magit
-use 'TimUntersberger/neogit'
+  --git diff
+  use 'sindrets/diffview.nvim'
 
---todo comments
-use 'folke/todo-comments.nvim'
+  --magit
+  use 'TimUntersberger/neogit'
 
---devicons
-use 'kyazdani42/nvim-web-devicons'
+  --todo comments
+  use 'folke/todo-comments.nvim'
 
---fullstack dev
-use 'pangloss/vim-javascript' --JS support
-use 'leafgarland/typescript-vim' --TS support
-use 'maxmellon/vim-jsx-pretty' --JS and JSX syntax
-use 'jparise/vim-graphql' --GraphQL syntax
-use 'mattn/emmet-vim'
+  --devicons
+  use 'kyazdani42/nvim-web-devicons'
+
+  --fullstack dev
+  use 'pangloss/vim-javascript' --JS support
+  use 'leafgarland/typescript-vim' --TS support
+  use 'maxmellon/vim-jsx-pretty' --JS and JSX syntax
+  use 'jparise/vim-graphql' --GraphQL syntax
+  use 'mattn/emmet-vim'
+
+  -- le duck
+  use 'tamton-aquib/duck.nvim'
 end)
