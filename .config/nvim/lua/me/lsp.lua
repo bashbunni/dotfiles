@@ -1,157 +1,67 @@
 -- Native LSP Setup
 require("me.keymap")
--- Global setup.
-local cmp = require 'cmp'
-cmp.setup({
-  snippet = {
-    expand = function(args)
-      require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
-    end,
-  },
-  mapping = {
-    ['<Tab>'] = function(fallback)
-      if cmp.visible() then
-        cmp.select_next_item()
-      else
-        fallback()
-      end
-    end,
-    ['<CR>'] = function(fallback)
-      if cmp.visible() then
-        cmp.confirm()
-      else
-        fallback()
-      end
-    end
-  },
+local lsp = require("lsp-zero")
 
-  sources = cmp.config.sources({
-    { name = 'nvim_lsp' },
-    { name = 'luasnip' }, -- For luasnip users.
-  }, {
-    { name = 'buffer' },
-  })
+lsp.preset("recommended")
+
+lsp.ensure_installed({
+  'tsserver',
+  'rust_analyzer',
 })
 
-local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
-
--- Use an on_attach function to only map the following keys
--- after the language server attaches to the current buffer
-require("mason").setup({
-  ui = {
-    icons = {
-      package_installed = "✓",
-      package_pending = "➜",
-      package_uninstalled = "✗"
+-- Fix Undefined global 'vim'
+lsp.configure('lua-language-server', {
+    settings = {
+        Lua = {
+            diagnostics = {
+                globals = { 'vim' }
+            }
+        }
     }
-  }
 })
 
-local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
-local on_attach = function(client, bufnr)
 
-  local function buf_set_keymap(...)
-    vim.api.nvim_buf_set_keymap(bufnr, ...)
-  end
+local cmp = require('cmp')
+local cmp_select = {behavior = cmp.SelectBehavior.Select}
+local cmp_mappings = lsp.defaults.cmp_mappings({
+  ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
+  ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
+  ['<C-y>'] = cmp.mapping.confirm({ select = true }),
+  ["<C-Space>"] = cmp.mapping.complete(),
+})
 
-  -- Mappings.
-  local opts = { noremap = true, silent = true }
+lsp.setup_nvim_cmp({
+  mapping = cmp_mappings
+})
 
-  -- See `:help vim.lsp.*` for documentation on any of the below functions
-  -- leaving only what I actually use...
-  nmap { "K", "<cmd>Lspsaga hover_doc<CR>", opts }
-  -- nmap { "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts }
-  nmap { "gd", "<cmd>Telescope lsp_definitions<CR>", opts }
-  nmap { "gr", "<cmd>Telescope lsp_references<CR>", opts }
-  nmap { "<C-j>", "<cmd>Telescope lsp_document_symbols<CR>", opts }
-  nmap { "<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts }
+lsp.set_preferences({
+    suggest_lsp_servers = false,
+    sign_icons = {
+        error = 'E',
+        warn = 'W',
+        hint = 'H',
+        info = 'I'
+    }
+})
 
-  nmap { "gi", "<cmd>Telescope lsp_implementations<CR>", opts }
-  nmap { "<leader>D", "<cmd>Telescope lsp_type_definitions<CR>", opts }
-  nmap { "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", opts }
-  nmap { '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts }
-  nmap { "gt", "<cmd>lua vim.lsp.buf.type_definition()<CR>", opts }
-  nmap { "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts }
-  nmap { "<leader>dj", "<cmd>Lspsaga diagnostic_jump_next<CR>", opts }
-  nmap { "<leader>dk", "<cmd>Lspsaga diagnostic_jump_prev<CR>", opts }
-  nmap { "<leader>r", "<cmd>Lspsada rename<CR>", opts }
+lsp.on_attach(function(client, bufnr)
+  local opts = {buffer = bufnr, remap = false}
 
-  vim.cmd([[
-            augroup formatting
-                autocmd! * <buffer>
-                autocmd BufWritePre <buffer> lua vim.lsp.buf.format()
-                autocmd BufWritePre <buffer> lua OrganizeImports(1000)
-            augroup END
-        ]])
+  vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
+  vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end, opts)
+  vim.keymap.set("n", "<leader>vws", function() vim.lsp.buf.workspace_symbol() end, opts)
+  vim.keymap.set("n", "<leader>vd", function() vim.diagnostic.open_float() end, opts)
+  vim.keymap.set("n", "[d", function() vim.diagnostic.goto_next() end, opts)
+  vim.keymap.set("n", "]d", function() vim.diagnostic.goto_prev() end, opts)
+  vim.keymap.set("n", "<leader>vca", function() vim.lsp.buf.code_action() end, opts)
+  vim.keymap.set("n", "<leader>vrr", function() vim.lsp.buf.references() end, opts)
+  vim.keymap.set("n", "<leader>vrn", function() vim.lsp.buf.rename() end, opts)
+  vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
+end)
 
-  -- Set autocommands conditional on server_capabilities
-  vim.cmd([[
-            augroup lsp_document_highlight
-                autocmd! * <buffer>
-                autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
-                autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
-            augroup END
-        ]])
-end
+lsp.setup()
 
--- organize imports
--- https://github.com/neovim/nvim-lspconfig/issues/115#issuecomment-902680058
-function OrganizeImports(timeoutms)
-  local params = vim.lsp.util.make_range_params()
-  params.context = { only = { "source.organizeImports" } }
-  local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, timeoutms)
-  for _, res in pairs(result or {}) do
-    for _, r in pairs(res.result or {}) do
-      if r.edit then
-        vim.lsp.util.apply_workspace_edit(r.edit, "UTF-8")
-      else
-        vim.lsp.buf.execute_command(r.command)
-      end
-    end
-  end
-end
+vim.diagnostic.config({
+    virtual_text = true
+})
 
-local lspconfig = require('lspconfig')
-lspconfig.gopls.setup {
-  capabilities = capabilities,
-  on_attach = on_attach,
-  settings = {
-    gopls = {
-      gofumpt = true,
-    },
-  },
-  flags = {
-    debounce_text_changes = 150,
-  },
-}
-
-lspconfig.sumneko_lua.setup {
-  capabilities = capabilities,
-  on_attach = on_attach,
-}
-
-lspconfig.hls.setup {
-  capabilities = capabilities,
-  on_attach = on_attach,
-}
-
-lspconfig.golangci_lint_ls.setup {
-  capabilities = capabilities,
-  on_attach = on_attach,
-  settings = {
-    gopls = {
-      gofumpt = true,
-    },
-  },
-  flags = {
-    debounce_text_changes = 150,
-  },
-}
-
-lspconfig.rust_analyzer.setup {
-  capabilities = capabilities,
-  on_attach = on_attach,
-  cmd = {
-    "rustup", "run", "stable", "rust-analyzer",
-  }
-}
