@@ -74,7 +74,7 @@ local on_attach = function(client, bufnr)
   nmap { "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts }
   nmap { "<leader>dj", "<cmd>Lspsaga diagnostic_jump_next<CR>", opts }
   nmap { "<leader>dk", "<cmd>Lspsaga diagnostic_jump_prev<CR>", opts }
-  nmap { "<leader>r", "<cmd>Lspsada rename<CR>", opts }
+  nmap { "<leader>r", "<cmd>Lspsaga rename<CR>", opts }
 
   vim.cmd([[
             augroup formatting
