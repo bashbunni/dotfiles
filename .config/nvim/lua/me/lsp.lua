@@ -1,5 +1,9 @@
+-- a must: https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
+
 -- Native LSP Setup
 require("me.keymap")
+vim.lsp.set_log_level("debug")
+
 -- Global setup.
 local cmp = require 'cmp'
 cmp.setup({
@@ -56,27 +60,25 @@ local on_attach = function(client, bufnr)
   -- See `:help vim.lsp.*` for documentation on any of the below functions
   -- leaving only what I actually use...
   nmap { "K", "<cmd>Lspsaga hover_doc<CR>", opts }
-  -- nmap { "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts }
-  nmap { "gd", "<cmd>Telescope lsp_definitions<CR>", opts }
-  nmap { "gr", "<cmd>Telescope lsp_references<CR>", opts }
+  nmap { "cd", "<cmd>Telescope lsp_definitions<CR>", opts }
+  nmap { "cr", "<cmd>Telescope lsp_references<CR>", opts }
   nmap { "<C-j>", "<cmd>Telescope lsp_document_symbols<CR>", opts }
   nmap { "<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opts }
 
-  nmap { "gi", "<cmd>Telescope lsp_implementations<CR>", opts }
+  nmap { "<leader>ci", "<cmd>Telescope lsp_implementations<CR>", opts }
   nmap { "<leader>D", "<cmd>Telescope lsp_type_definitions<CR>", opts }
-  nmap { "<leader>r", "<cmd>lua vim.lsp.buf.rename()<CR>", opts }
+  nmap { "<leader>cr", "<cmd>lua vim.lsp.buf.rename()<CR>", opts }
   nmap { '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts }
-  nmap { "gt", "<cmd>lua vim.lsp.buf.type_definition()<CR>", opts }
+  nmap { "<leader>ck", "<cmd>lua vim.lsp.buf.type_definition()<CR>", opts }
   nmap { "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts }
-  nmap { "<leader>dj", "<cmd>Lspsaga diagnostic_jump_next<CR>", opts }
-  nmap { "<leader>dk", "<cmd>Lspsaga diagnostic_jump_prev<CR>", opts }
+  nmap { "<leader>cp", "<cmd>Lspsaga diagnostic_jump_next<CR>", opts }
+  nmap { "<leader>cn", "<cmd>Lspsaga diagnostic_jump_prev<CR>", opts }
 
   if client.server_capabilities.documentFormattingProvider then
     vim.cmd([[
             augroup formatting
                 autocmd! * <buffer>
                 autocmd BufWritePre <buffer> lua vim.lsp.buf.format()
-                autocmd BufWritePre <buffer> lua OrganizeImports(1000)
             augroup END
         ]])
   end
@@ -95,20 +97,24 @@ end
 
 -- organize imports
 -- https://github.com/neovim/nvim-lspconfig/issues/115#issuecomment-902680058
-function OrganizeImports(timeoutms)
-  local params = vim.lsp.util.make_range_params()
-  params.context = { only = { "source.organizeImports" } }
-  local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, timeoutms)
-  for _, res in pairs(result or {}) do
-    for _, r in pairs(res.result or {}) do
-      if r.edit then
-        vim.lsp.util.apply_workspace_edit(r.edit, "UTF-8")
-      else
-        vim.lsp.buf.execute_command(r.command)
+vim.api.nvim_create_autocmd("BufWritePre", {
+  pattern = { "*.go" },
+  callback = function()
+    local params = vim.lsp.util.make_range_params(nil, vim.lsp.util._get_offset_encoding())
+    params.context = { only = { "source.organizeImports" } }
+
+    local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, 3000)
+    for _, res in pairs(result or {}) do
+      for _, r in pairs(res.result or {}) do
+        if r.edit then
+          vim.lsp.util.apply_workspace_edit(r.edit, vim.lsp.util._get_offset_encoding())
+        else
+          vim.lsp.buf.execute_command(r.command)
+        end
       end
     end
-  end
-end
+  end,
+})
 
 local lspconfig = require('lspconfig')
 lspconfig.gopls.setup {
@@ -124,7 +130,7 @@ lspconfig.gopls.setup {
   },
 }
 
-lspconfig.sumneko_lua.setup {
+lspconfig.lua_ls.setup {
   capabilities = capabilities,
   on_attach = on_attach,
 }
