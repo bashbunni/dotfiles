@@ -23,7 +23,6 @@ return require('packer').startup(function(use)
 
   --Treesitter
   use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
-  use 'williamboman/mason.nvim'
 
   --Markdown preview
   use 'ellisonleao/glow.nvim'
@@ -64,7 +63,10 @@ return require('packer').startup(function(use)
   use 'hrsh7th/cmp-path'
   use 'L3MON4D3/LuaSnip'
   use 'saadparwaiz1/cmp_luasnip'
+  -- commands to run to start our LSPs
   use 'neovim/nvim-lspconfig'
+  use 'williamboman/mason-lspconfig.nvim'
+  use 'williamboman/mason.nvim'
 
   -- LSP Saga
   use({

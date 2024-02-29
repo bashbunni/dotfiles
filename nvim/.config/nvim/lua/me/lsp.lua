@@ -47,7 +47,6 @@ require("mason").setup({
     }
   }
 })
-
 local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
 local on_attach = function(client, bufnr)
   local function buf_set_keymap(...)
@@ -116,80 +115,86 @@ vim.api.nvim_create_autocmd("BufWritePre", {
   end,
 })
 
-local lspconfig = require('lspconfig')
-lspconfig.gopls.setup {
-  capabilities = capabilities,
-  on_attach = on_attach,
-  settings = {
-    gopls = {
-      gofumpt = true,
-    },
-  },
-  flags = {
-    debounce_text_changes = 150,
-  },
-}
-
-lspconfig.lua_ls.setup {
-  capabilities = capabilities,
-  on_attach = on_attach,
-}
-
-lspconfig.hls.setup {
-  filetypes = { 'haskell', 'lhaskell', 'cabal' },
-  capabilities = capabilities,
-  on_attach = on_attach,
-  settings = {
-    haskell = {
-      cabalFormattingProvider = "cabalfmt",
-      formattingProvider = "ormolu"
+local servers = {
+  rust_analyzer = {
+    cmd = {
+      "rustup", "run", "stable", "rust-analyzer",
     }
   },
-  single_file_support = true,
-}
-
-lspconfig.golangci_lint_ls.setup {
-  capabilities = capabilities,
-  on_attach = on_attach,
-  settings = {
-    gopls = {
-      gofumpt = true,
+  ltex = {},
+  yamlls = {
+    settings = {
+      yaml = {
+        schemas = {
+          ["https://json.schemastore.org/github-workflow.json"] = "/.github/workflows/*"
+        },
+      },
+    }
+  },
+  hls = {
+    settings = {
+      haskell = {
+        cabalFormattingProvider = "cabalfmt",
+        formattingProvider = "ormolu"
+      }
+    },
+    single_file_support = true,
+  },
+  gopls = {
+    settings = {
+      gopls = {
+        gofumpt = true,
+      },
+    },
+    flags = {
+      debounce_text_changes = 150,
     },
   },
-  flags = {
-    debounce_text_changes = 150,
-  },
-}
 
-lspconfig.rust_analyzer.setup {
-  capabilities = capabilities,
-  on_attach = on_attach,
-  cmd = {
-    "rustup", "run", "stable", "rust-analyzer",
-  }
-}
-
-lspconfig.ltex.setup {
-  capabilities = capabilities,
-  on_attach = on_attach,
-}
-
-lspconfig.yamlls.setup {
-  settings = {
-    yaml = {
-      schemas = {
-        ["https://json.schemastore.org/github-workflow.json"] = "/.github/workflows/*"
+  golangci_lint_ls = {},
+  lua_ls = {
+    -- cmd = {...},
+    -- filetypes { ...},
+    -- capabilities = {},
+    settings = {
+      Lua = {
+        runtime = { version = 'LuaJIT' },
+        workspace = {
+          checkThirdParty = false,
+          -- Tells lua_ls where to find all the Lua files that you have loaded
+          -- for your neovim configuration.
+          library = {
+            '${3rd}/luv/library',
+            unpack(vim.api.nvim_get_runtime_file('', true)),
+          },
+          -- If lua_ls is really slow on your computer, you can try this instead:
+          -- library = { vim.env.VIMRUNTIME },
+        },
+        -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
+        -- diagnostics = { disable = { 'missing-fields' } },
       },
     },
   }
 }
 
-lspconfig.bashls.setup {
-  capabilities = capabilities,
-  on_attach = on_attach,
-}
+local ensureinstalled = vim.tbl_keys(servers)
 
-lspconfig.clojure_lsp.setup {
-  capabilities = capabilities,
-  on_attach = on_attach,
+require('mason-lspconfig').setup {
+  ensure_installed = ensureinstalled,
+  handlers = {
+    function(server_name)
+      local server = servers[server_name] or {}
+      require('lspconfig')[server_name].setup {
+        cmd = server.cmd,
+        settings = server.settings,
+        filetypes = server.filetypes,
+        flags = server.flags,
+        -- This handles overriding only values explicitly passed
+        -- by the server configuration above. Useful when disabling
+        -- certain features of an LSP (for example, turning off formatting for tsserver)
+        capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {}),
+        on_attach = on_attach,
+      }
+    end,
+  },
 }

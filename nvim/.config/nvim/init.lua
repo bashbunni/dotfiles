@@ -1,3 +1,5 @@
+-- Check out https://github.com/nvim-lua/kickstart.nvim !
+
 -- Aesthetic
 -- pcall catches errors if the plugin doesn't load
 local ok, catppuccin = pcall(require, "catppuccin")
