@@ -110,6 +110,7 @@ return require('packer').startup(function(use)
 
   --magit
   use 'TimUntersberger/neogit'
+  require('neogit').setup()
 
   --todo comments
   use 'folke/todo-comments.nvim'

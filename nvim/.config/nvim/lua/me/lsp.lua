@@ -72,6 +72,7 @@ local on_attach = function(client, bufnr)
   nmap { "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts }
   nmap { "<leader>cp", "<cmd>Lspsaga diagnostic_jump_next<CR>", opts }
   nmap { "<leader>cn", "<cmd>Lspsaga diagnostic_jump_prev<CR>", opts }
+  nmap { "<leader>cl", "<cmd>Telescope diagnostics<CR>", opts }
 
   if client.server_capabilities.documentFormattingProvider then
     vim.cmd([[
@@ -115,13 +116,19 @@ vim.api.nvim_create_autocmd("BufWritePre", {
   end,
 })
 
+local ok, lspconfig = pcall(require, "lspconfig")
+if not ok then return end
+
 local servers = {
+  elmls = {},
   rust_analyzer = {
     cmd = {
       "rustup", "run", "stable", "rust-analyzer",
     }
   },
-  ltex = {},
+  ltex = {
+    diagnostics = { disable = { 'missing-fields' } },
+  },
   yamlls = {
     settings = {
       yaml = {
@@ -153,9 +160,6 @@ local servers = {
 
   golangci_lint_ls = {},
   lua_ls = {
-    -- cmd = {...},
-    -- filetypes { ...},
-    -- capabilities = {},
     settings = {
       Lua = {
         runtime = { version = 'LuaJIT' },
@@ -167,11 +171,7 @@ local servers = {
             '${3rd}/luv/library',
             unpack(vim.api.nvim_get_runtime_file('', true)),
           },
-          -- If lua_ls is really slow on your computer, you can try this instead:
-          -- library = { vim.env.VIMRUNTIME },
         },
-        -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
-        -- diagnostics = { disable = { 'missing-fields' } },
       },
     },
   }
@@ -189,6 +189,7 @@ require('mason-lspconfig').setup {
         settings = server.settings,
         filetypes = server.filetypes,
         flags = server.flags,
+        root_dir = server.root_dir,
         -- This handles overriding only values explicitly passed
         -- by the server configuration above. Useful when disabling
         -- certain features of an LSP (for example, turning off formatting for tsserver)
