@@ -14,11 +14,17 @@ export GPG_TTY=$TTY
 export PATH=$PATH:$GOPATH/bin
 export PATH=$PATH:"$HOME/.config/emacs/bin"
 
+# on my hands and knees using nvm so I can write elm.
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
 ZSH_THEME="powerlevel10k/powerlevel10k"
 POWERLEVEL9K_MODE="nerdfont-complete"
+typeset -g POWERLEVEL9K_INSTANT_PROMPT=off
 # Uncomment the following line to enable command auto-correction.
 ENABLE_CORRECTION="true"
-plugins=(git zsh-autosuggestions zsh-syntax-highlighting)
+# plugins=(git zsh-autosuggestions zsh-syntax-highlighting)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -27,13 +33,6 @@ export EDITOR='nvim'
 export PATH="$HOME/.npm/bin:$PATH"
 [ -f "$HOME/.ghcup/env" ] && source "$HOME/.ghcup/env" # ghcup-env
 
-alias dotfiles='/usr/bin/git --git-dir=$HOME/.cfg --work-tree=$HOME'
-alias stream='cd ~/Documents/Hobbies/'
-alias bb='cd ~/Documents/bashbunni'
-alias notes='cd ~/dev-notebook'
-alias config='nvim ~/.config/nvim/init.vim'
-alias luaconf='nvim ~/.config/nvim/lua/bashbunni.lua'
-alias tasks='cd ~/charm-notebook/tasks/'
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 alias sourcetmux='tmux source ~/.tmux.conf'
@@ -45,10 +44,11 @@ alias theme="kitty +kitten themes --reload-in=all" # then add theme name
 alias icat="kitty +kitten icat"
 alias connect="kitty +kitten ssh" # prevent weird keypress handling over ssh
 alias olm="libolm"
-alias goals="nvim ~/dev-notebook/reflection/goals-2022.md"
 
 # Dotfiles management
-# dotfiles are stored in ${HOME}/dotfiles/.config/${PKGNAME}`
+alias dotfiles='/usr/bin/git --git-dir=$HOME/.cfg --work-tree=$HOME'
+# dotfiles are stored in ${HOME}/dotfiles/.config/${PKGNAME}` with GNU stow. Thanks Brandon!
+# TODO: link his blog post
 # e.g.
 # home/
 #    /brandon/
@@ -72,8 +72,8 @@ alias goals="nvim ~/dev-notebook/reflection/goals-2022.md"
 #                .vim/
 #                    [...some files]
 #                .vimrc
-#
 
+# productivity corner
 declare -A pomo_options
 pomo_options["work"]="45"
 pomo_options["break"]="10"
@@ -89,5 +89,3 @@ pomodoro () {
 
 alias work="pomodoro 'work'"
 alias br="pomodoro 'break'"
-
-typeset -g POWERLEVEL9K_INSTANT_PROMPT=off
