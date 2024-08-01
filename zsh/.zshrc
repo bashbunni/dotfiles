@@ -46,9 +46,12 @@ alias connect="kitty +kitten ssh" # prevent weird keypress handling over ssh
 alias olm="libolm"
 
 # Dotfiles management
-alias dotfiles='/usr/bin/git --git-dir=$HOME/.cfg --work-tree=$HOME'
+#
+# The old way:
+# alias dotfiles='/usr/bin/git --git-dir=$HOME/.cfg --work-tree=$HOME'
+#
+# The new way:
 # dotfiles are stored in ${HOME}/dotfiles/.config/${PKGNAME}` with GNU stow. Thanks Brandon!
-# TODO: link his blog post
 # e.g.
 # home/
 #    /brandon/
@@ -73,7 +76,7 @@ alias dotfiles='/usr/bin/git --git-dir=$HOME/.cfg --work-tree=$HOME'
 #                    [...some files]
 #                .vimrc
 
-# productivity corner
+# Productivity corner
 declare -A pomo_options
 pomo_options["work"]="45"
 pomo_options["break"]="10"

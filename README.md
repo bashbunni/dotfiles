@@ -5,6 +5,24 @@ dotfiles using symlinks. If you're interested in figuring out how that works
 for yourself, [here][blog] is a great blog post on it. Note that there are some
 initial steps you'll need to clone my entire config.
 
+## GNU Stow
+
+If you already have an existing config you want to back up, create your dotfiles
+repository, then run `stow .zshrc --adopt` to set the contents of your dotfiles'
+`.zshrc` for example, to what you have configured at `~/.zshrc`. You can also
+map packages like `nvim`, `doom`, etc. you just need to follow the right
+directory hierarchy as shown in the blog linked above.
+
+### Installing on a fresh machine
+
+Typically if I'm installing on a machine that has an existing configuration for a package, I'll use the `--adopt` directive for GNU stow, then do a `git restore`. Here's what that looks like:
+1. Clone the repo and `cd` in there.
+2. For each package in the repo that you want symlinked, run `stow <package>`. You will need to use `--adopt` if the package already exists on the machine. This creates a symlink for the package to your dotfiles repo.
+3. If you want to use the config you had previously stored in your dotfiles repo, then run `git restore <dir>` or `git restore .` if you're feeling wild. If you want to **overwrite** the neovim config you had in your dotfiles repo with the one you have currently at `~/.config/nvim`, then don't do the restore.
+
+> [!WARNING] The `--adopt` flag *will* overwrite the contents of your current
+> directory with the contents from your target directory. Please be careful.
+
 ## Neovim
 
 1. If you have an existing neovim installation, delete any existing runtime dir
