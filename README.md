@@ -7,11 +7,48 @@ initial steps you'll need to clone my entire config.
 
 ## GNU Stow
 
+Easiest path:
+
+1. Create `~/dotfiles`
+2. Create directory structure relative as if the `dotfiles` directory was `~`
+3. Move existing files into the dotfiles directory. For example: `mv ~/.config/doom/* ~/dotfiles/doom/.config/doom/`
+4. `stow doom` (or whatever package you just added)
+
+```sh
+├── banner
+│   └── banner
+├── doom
+│   └── .config
+│       └── doom
+│           ├── config.el
+│           ├── custom.el
+│           ├── init.el
+│           └── packages.el
+├── polybar
+│   └── .config
+│       └── polybar
+│           ├── config
+│           ├── launch.sh
+│           ├── power.sh
+│           └── scripts
+│               └── weather.sh
+├── nvim
+│   └── .config
+│       └── nvim
+├── i3
+│   └── .config
+│       └── i3
+│           ├── config
+│           └── config-old
+└── zsh
+    └── .zshrc
+```
+
 If you already have an existing config you want to back up, create your dotfiles
-repository, then run `stow .zshrc --adopt` to set the contents of your dotfiles'
-`.zshrc` for example, to what you have configured at `~/.zshrc`. You can also
-map packages like `nvim`, `doom`, etc. you just need to follow the right
-directory hierarchy as shown in the blog linked above.
+repository, then run `stow .zshrc --adopt` (CAREFUL with `--adopt`) to set the
+contents of your dotfiles' `.zshrc` for example, to what you have configured at
+`~/.zshrc`. You can also map packages like `nvim`, `doom`, etc. you just need to
+follow the right directory hierarchy as shown above.
 
 ### Installing on a fresh machine
 
@@ -23,6 +60,26 @@ Typically if I'm installing on a machine that has an existing configuration for 
 > [!WARNING] 
 > The `--adopt` flag *will* overwrite the contents of your current
 > directory with the contents from your target directory. Please be careful.
+
+## Doom Emacs
+
+To get the clipboard working on Linux, you need `xclip` installed. I think I installed it with
+1. `<M-x> package install`
+2. `xclip`
+
+Just make sure it's on your system and you should be able to use your system clipboard with emacs.
+
+On Mac you need `pbcopy` which you can install with `<M-x> package`.
+
+``` emacs-lisp
+;; use system clipboard
+(require 'pbcopy)
+(turn-on-pbcopy)
+```
+
+I think you should be able to just yoink my doom emacs config then run `doom
+sync`. There may be some missing packages, but you should be able to install
+them with `<M-x> package-install`.
 
 ## Neovim
 
