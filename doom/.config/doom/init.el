@@ -95,7 +95,7 @@
        (eval +overlay)     ; run code, run (also, repls)
        ;;gist              ; interacting with github gists
        (lookup +dictionary +offline +docsets)              ; navigate your code and its documentation
-       lsp               ; M-x vscode
+       (lsp +eglot)               ; M-x vscode
        magit             ; a git porcelain for Emacs
        ;;make              ; run make tasks from Emacs
        ;;pass              ; password manager for nerds
@@ -124,7 +124,7 @@
        ;;data              ; config/data formats
        ;;(dart +flutter)   ; paint ui and not much else
        ;;dhall
-       ;;elixir            ; erlang done right
+       elixir            ; erlang done right
        (elm +lsp +treesitter)               ; care for a cup of TEA?
        (emacs-lisp +lsp +treesitter)        ; drown in parentheses
        ;;erlang            ; an elegant language for a more civilized age
@@ -141,7 +141,7 @@
        ;;hy                ; readability of scheme w/ speed of python
        ;;idris             ; a language you can depend on
        ;;json              ; At least it ain't XML
-       ;;(java +lsp)       ; the poster child for carpal tunnel syndrome
+       (java +lsp +treesitter)       ; the poster child for carpal tunnel syndrome
        ;;javascript        ; all(hope(abandon(ye(who(enter(here))))))
        ;;julia             ; a better, faster MATLAB
        ;;kotlin            ; a better, slicker Java(Script)
@@ -170,10 +170,10 @@
        sh                ; she sells {ba,z,fi}sh shells on the C xor
        ;;sml
        ;;solidity          ; do you need a blockchain? No.
-       ;;swift             ; who asked for emoji variables?
+       swift             ; who asked for emoji variables?
        ;;terra             ; Earth and Moon in alignment for performance.
        ;;web               ; the tubes
-       ;;yaml              ; JSON, but readable
+       (yaml +lsp)              ; JSON, but readable
        (zig +lsp)               ; C, but simpler
 
        :email
@@ -192,3 +192,12 @@
        :config
        ;;literate
        (default +bindings +smartparens))
+;; enable debugging
+;; Next :
+;; M-x -> “dap-cpptools-setup” (once)
+;; M-x -> “dap-debug-edit-template” (indicate the binary path)
+;; Template is open, I need to complete to specify the binary
+;; M-x -> “eval-buffer” (to be done on the template buffer to use it)
+;; M-x -> “dap-debug” (launches the debug)
+;;
+;;(after! format

@@ -33,9 +33,12 @@
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
 (setq doom-theme 'catppuccin)
-(setq catppuccin-flavor 'macchiato) ; or 'frappe 'latte, 'macchiato, or 'mocha
-    (load-theme 'catppuccin t)
-
+;; (setq catppuccin-flavor 'frappe) ; or 'frappe 'latte, 'macchiato, or 'mocha
+(setq catppuccin-flavor 'frappe) ; or 'frappe 'latte, 'macchiato, or 'mocha
+(load-theme 'catppuccin t)
+;; (require 'kaolin-themes)
+;; (load-theme 'kaolin-valley-dark t)
+;;
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
@@ -88,19 +91,72 @@
 (add-hook 'go-mode-hook #'lsp-deferred)
 ;; Make sure you don't have other goimports hooks enabled.
 (defun lsp-go-install-save-hooks ()
-    (add-hook 'before-save-hook #'lsp-organize-imports t t))
+  (add-hook 'before-save-hook #'lsp-organize-imports t t))
 (add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
 
 ;; enable all analyzers; not done by default
 (after! lsp-mode
-  (setq  lsp-go-analyses '((fieldalignment . t)
-                           (nilness . t)
+  (setq  lsp-go-analyses '((nilness . t)
                            (shadow . t)
                            (unusedparams . t)
                            (unusedwrite . t)
                            (useany . t)
                            (unusedvariable . t)))
-)
+  )
+
+;; DAP
+(require 'dap-mode)
+(require 'dap-ui)
+(after! dap-mode
+  (setq dap-auto-configure-features '(sessions locals breakpoints expressions))
+  (setq dap-print-io t)
+  (setq dap-ui-breakpoint-line-face 'highlight)
+  (setq dap-ui-use-line-overlay t)
+  (dap-auto-configure-mode 1)
+  (dap-mode 1)
+  )
+(after! dap-ui-mode
+  (dap-ui-mode 1)
+  )
+
+;; Golang DAP
+(require 'dap-dlv-go)
+;; Example custom config
+;;(dap-register-debug-template "Go Dlv Launch File Configuration"
+;;                             (list :type "go"
+;;                                   :request "launch"
+;;                                   :name "Launch File"
+;;                                   :mode "debug"
+;;                                   :program "${file}"))
+
 ;; use system clipboard
+;; TODO requires user to install package pbcopy.
 (require 'pbcopy)
 (turn-on-pbcopy)
+
+;; use clang for formatting
+;; (setq lsp-clients-clangd-args '("-j=3"
+;; 				"--background-index"
+;; 				"--clang-tidy"
+;; 				"--completion-style=detailed"
+;; 				"--header-insertion=never"
+;; 				"--header-insertion-decorators=0"))
+;; (after! lsp-clangd (set-lsp-priority! 'clangd 2))
+
+
+;; DEBUGGING
+;; C++
+;; (setq dap-auto-configure-mode t)
+;; (requires 'dap-cpptools)
+;; Next :
+;; M-x -> “dap-cpptools-setup” (once)
+;; M-x -> “dap-debug-edit-template” (indicate the binary path)
+;; Template is open, I need to complete to specify the binary
+;; M-x -> “eval-buffer” (to be done on the template buffer to use it)
+;; M-x -> “dap-debug” (launches the debug)
+;;
+;; RSS Feeds
+(setq elfeed-feeds
+      '("https://this-week-in-rust.org/rss.xml"
+        "http://feeds.bbci.co.uk/news/rss.xml"
+        "https://charm.sh/blog/rss.xml"))

@@ -58,3 +58,7 @@
 
 ;; Theme
 (package! catppuccin-theme)
+;; Debugging
+(use-package dap-mode)
+(use-package posframe)
+;; package-install lldb
