@@ -17,7 +17,9 @@ bindsym $mod+F4 exec --no-startup-id flameshot gui
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-font pango:monospace 8
+# font pango:monospace 8
+# set $background /home/bashbunni/Pictures/paint-wallpaper.jpg
+output * background /home/bashbunni/Pictures/paint-wallpaper.jpg fill
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
@@ -173,6 +175,12 @@ mode "resize" {
         bindsym $mod+r mode "default"
 }
 
+corner_radius 10
+blur enable
+blur_passes 2
+blur_radius 2
+layer_effects "waybar" "blur enable; shadows enable; corner_radius 6"
+
 bindsym $mod+r mode "resize"
 
 # class                 border  bground text    indicator child_border
@@ -188,7 +196,9 @@ client.background       #F8F8F2
 bindsym $mod+d exec --no-startup-id rofi -combi-modi window#drun -show combi -modi combi -show-icons
 bindsym $mod+g exec --no-startup-id rofi -show window
 
-bindsym F1 exec $HOME/.config/emacs/bin/doom run
+exec emacs --daemon
+bindsym F1 exec emacsclient -nw
+bindsym F2 exec emacsclient -ic
 
 # manage monitors
 workspace 1 output HDMI-2
@@ -200,4 +210,4 @@ smart_borders on
 gaps inner 5
 gaps outer 3
 default_border pixel 3
-font pango:"BlexMono Nerd Font" Medium 12
+font pango:"Terminess Nerd Font" Medium 12

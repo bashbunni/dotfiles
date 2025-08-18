@@ -1,8 +1,10 @@
 {
     "layer": "top",
     "position": "top",
+    "height": 20,
     "modules-left": ["sway/workspaces"],
-    "modules-right": ["custom/keyboard", "network", "battery", "pulseaudio", "clock", "custom/power", "custom/quit"],
+    "modules-center": ["clock"],
+    "modules-right": ["network", "battery", "pulseaudio", "custom/power", "custom/quit"],
 "sway/workspaces": {
     "all-outputs": true,
     "disable-scroll": true,
