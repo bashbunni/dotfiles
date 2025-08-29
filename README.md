@@ -63,7 +63,7 @@ Typically if I'm installing on a machine that has an existing configuration for 
 
 ## Doom Emacs
 
-To get the clipboard working on Linux, you need `xclip` installed. I think I installed it with
+To get the clipboard working on x11, you need `xclip` installed. I think I installed it with
 1. `<M-x> package install`
 2. `xclip`
 
