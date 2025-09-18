@@ -6,7 +6,8 @@
     "modules-center": ["clock"],
     "modules-right": ["network", "battery", "pulseaudio", "custom/power", "custom/quit"],
 "sway/workspaces": {
-    "all-outputs": true,
+    "all-outputs": false,
+    "output": "HDMI-A-2",
     "disable-scroll": true,
     "format": "{icon}",
     "format-icons": {

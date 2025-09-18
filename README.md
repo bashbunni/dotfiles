@@ -110,3 +110,15 @@ them with `<M-x> package-install`.
 4. Install plugins with `prefix + I` (capital i)
 
 [tpm]: https://github.com/tmux-plugins/tpm?tab=readme-ov-file#installation
+
+## Yubikey auth on your machine
+
+When you create a new SSH key, you can use `ssh-keygen -t ed25519-sk -O resident` for a 2FA SSH key stored on your Yubikey.
+
+
+## NixOS
+
+I have a machine running NixOS, here's what I learned when getting started.
+First, all of the available packages are found at https://search.nixos.org. To
+update NixOS, you can use `sudo nixos-rebuild switch` to rebuild your nix config
+and update your packages added to `/etc/nixos/configuration.nix`.

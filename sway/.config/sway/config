@@ -201,13 +201,20 @@ bindsym F1 exec emacsclient -nw
 bindsym F2 exec emacsclient -ic
 
 # manage monitors
-workspace 1 output HDMI-2
+workspace 1 output HDMI-A-2
 workspace 2 output eDP-1
-exec_always xrandr --output HDMI-2 --auto --left-of eDP-1
+exec_always xrandr --output HDMI-A-2 --primary --left-of eDP-1
+
+# set external display as primary
+output HDMI-A-2 pos 0 0
+
+# disable laptop screen when lid is closed
+bindswitch lid:on output eDP-1 disable
+bindswitch lid:off output eDP-1 enable
 
 # design
 smart_borders on
 gaps inner 5
 gaps outer 3
 default_border pixel 3
-font pango:"Terminess Nerd Font" Medium 12
+font pango:"Terminess Nerd Font" Medium 14
