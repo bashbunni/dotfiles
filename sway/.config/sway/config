@@ -207,6 +207,7 @@ exec_always xrandr --output HDMI-A-2 --primary --left-of eDP-1
 
 # set external display as primary
 output HDMI-A-2 pos 0 0
+output HDMI-A-2 scale 1.2
 
 # disable laptop screen when lid is closed
 bindswitch lid:on output eDP-1 disable
@@ -217,4 +218,4 @@ smart_borders on
 gaps inner 5
 gaps outer 3
 default_border pixel 3
-font pango:"Terminess Nerd Font" Medium 14
+font pango:"Terminess Nerd Font" Medium 20
