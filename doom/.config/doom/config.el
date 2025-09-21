@@ -109,3 +109,26 @@
 
 ;; use fish shell by default
 (setq explicit-shell-file-name "/run/current-system/sw/bin/fish")
+
+;; use wayland copy (I found this online, hopefully it works :D)
+(when (and string= (getenv "XDG_SESSION_TYPE") "wayland")
+  (executable-find "wl-copy")
+  (executable-find "wl-paste"))
+(defun my-wl-copy (text)
+  "Copy with wl-copy if in terminal, otherwise use the original value of `interprogram-cut-function'."
+  (if (display-graphic-p)
+      (gui-select-text text)
+    (let ((wl-copy-process
+           (make-process :name "wl-copy"
+                         :buffer nil
+                         :command '("wl-copy")
+                         :connection-type 'pipe)))
+      (process-send-string wl-copy-process text)
+      (process-send-eof wl-copy-process))))
+(defun my-wl-paste ()
+  "Paste with wl-paste if in terminal. otherwise use the original value of `interprogram-paste-function'"
+  (if (display-graphic-p)
+      (gui-selection-value)
+    (shell-command-to-string "wl-paste --no-newline")))
+(setq interprogram-cut-function #'my-wl-copy)
+(setq interprogram-paste-function #'my-wl-paste))
