@@ -17,6 +17,7 @@ window#waybar {
   margin: 3px 0px;
   background: #1d1f21;
   padding: 3px;
+  padding-right: 4px;
   color: #c5c8c6;
 }
 
