@@ -20,7 +20,7 @@
 ;;
 ;; See 'C-h v doom-font' for documentation and more examples of what they
 ;; accept. For example:
-;;
+
 (setq doom-font (font-spec :family "Terminess Nerd Font" :size 18 :weight 'medium)
       doom-variable-pitch-font (font-spec :family "Terminess Nerd Font" :size 18))
 ;;
@@ -45,7 +45,10 @@
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
-(setq org-directory "/Volumes/mememe/Org/")
+(setq org-directory "~/org/")
+;; you can customize your rss feed at ~/org/elfeed.org. This works because I'm
+;; using +org with my rss plugin. Check out
+;; https://github.com/remyhonig/elfeed-org to see an example.
 
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
