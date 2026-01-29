@@ -1,0 +1,24 @@
+[user]
+	name = bashbunni
+	email = bunni@bashbunni.dev
+[init]
+	defaultBranch = main
+[pull]
+	rebase = true
+[core]
+	editor = nvim --clean
+	excludesfile = $HOME/.gitignore_global
+[commit]
+	gpgsign = true
+[url "ssh://git@github.com/"]
+    insteadOf = https://github.com/
+
+[alias]
+	st = status
+	cm = commit -m
+	p = push
+	pf = push --force-with-lease
+	wa = worktree add
+	wl = worktree list
+	wd = worktree remove
+	pretty = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short

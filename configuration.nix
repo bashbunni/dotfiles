@@ -8,6 +8,7 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      /home/bashbunni/dotfiles/nix/sway.nix
     ];
 
   # Bootloader.
@@ -23,9 +24,10 @@
 
   # Enable networking
   networking.networkmanager.enable = true;
+  services.blueman.enable = true;
 
   # Set your time zone.
-  time.timeZone = "America/New_York";
+  time.timeZone = "America/Los_Angeles";
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
@@ -43,29 +45,25 @@
   };
 
   # Enable the X11 windowing system.
-  services.xserver.enable = true;
+  services.xserver = {
+    enable = true;
+  # Configure keymap in X11
+    xkb = {
+      layout = "us";
+      variant = "";
+    };
+  };
 
   # Enable the GNOME Desktop Environment.
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
-
-# I'm not emotionally prepared for this
-#  services.xserver.windowManager.xmonad = {
-#     enable = true;
-#     enableContribAndExtras = true;
-#  }
-
-  # Configure keymap in X11
-  services.xserver.xkb = {
-    layout = "us";
-    variant = "mac";
-  };
+# replaced in sway.nix
+  services.displayManager.gdm.enable = true;
+  services.desktopManager.gnome.enable = true;
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
 
   # Enable sound with pipewire.
-  hardware.pulseaudio.enable = false;
+  services.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
@@ -86,16 +84,14 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.bashbunni = {
     isNormalUser = true;
+    home = "/home/bashbunni";
     description = "bashbunni";
     extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [
-    #  thunderbird
-    ];
     shell = pkgs.fish;
   };
 
   # Enable automatic login for the user.
-  services.xserver.displayManager.autoLogin.enable = true;
+  services.xserver.displayManager.autoLogin.enable = false;
   services.xserver.displayManager.autoLogin.user = "bashbunni";
 
   # Workaround for GNOME autologin: https://github.com/NixOS/nixpkgs/issues/103746#issuecomment-945091229
@@ -115,9 +111,10 @@
   ];
 
 # Use emacs overlay. Required for Emacs 28+.
+# Use a commit SHA for a specific commit to prevent overlay rebuild every time (can be very long).
   nixpkgs.overlays = [
     (import (builtins.fetchTarball {
-      url = "https://github.com/nix-community/emacs-overlay/archive/master.tar.gz";
+      url = "https://github.com/nix-community/emacs-overlay/archive/87181272bf633bbc9f19a8aa8662833940bf18ed.tar.gz";
     }))
   ];
 
@@ -146,8 +143,13 @@
     pavucontrol
     lolcat
     xorg.xkill
-    xclip
+    wl-clipboard
+    # xclip
     coreutils
+    element-web
+    zed-editor
+# rust stuff
+    jetbrains.rust-rover
 # emacs deps
 # make packages available to emacsclient (see nixos wiki's emacs docs)
     emacsPackages.pbcopy
@@ -161,12 +163,17 @@
     cmake
     gnumake
     libgcc
-    emacsGcc
     pam_u2f
     ispell
 # language servers
     gopls
     haskell-language-server
+# languages
+    go
+# yak shaving
+    wl-mirror # mirror your display (used in sway config)
+    greetd
+    tuigreet
   ];
 
   fonts = {
@@ -222,4 +229,16 @@ security.pam.services = {
     u2fAuth = true;
   };
 };
+
+  # Required for Polkit and D-Bus permissions
+#  security.polkit.enable = true;
+
+  # Allow user to run swaylock
+  # security.pam.services.swaylock = {};
+
+# Make sure waybar always runs
+# programs.waybar = {
+#   enable = true;
+# };
+
 }
