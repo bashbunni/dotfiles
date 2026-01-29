@@ -1,9 +1,5 @@
 # i3 config file (v4)
-#
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
-
-# Run services.
-exec waybar
 
 # Start modifiers
 set $mod Mod4
@@ -19,7 +15,7 @@ bindsym $mod+F4 exec --no-startup-id flameshot gui
 # is used in the bar {} block below.
 # font pango:monospace 8
 # set $background /home/bashbunni/Pictures/paint-wallpaper.jpg
-output * background /home/bashbunni/Pictures/paint-wallpaper.jpg fill
+exec_always bash -c '[ -f home/bashbunni/Pictures/background.png ] && swaymsg "output * background /home/bashbunni/Pictures/background.png fill" || swaymsg "output * bg #00A86B"'
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
@@ -144,11 +140,11 @@ bindsym $mod+Shift+9 move container to workspace number $ws9
 bindsym $mod+Shift+0 move container to workspace number $ws10
 
 # reload the configuration file
-bindsym $mod+Shift+c reload
+bindsym $mod+Shift+c swaymsg reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
-bindsym $mod+Shift+r restart
+bindsym $mod+Shift+r swaymsg restart
 # exit i3 (logs you out of your X session)
-bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
+bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session' -B 'Yes, exit sway' 'swaymsg exit'
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
@@ -197,21 +193,21 @@ bindsym $mod+d exec --no-startup-id rofi -combi-modi window#drun -show combi -mo
 bindsym $mod+g exec --no-startup-id rofi -show window
 
 exec emacs --daemon
-bindsym F1 exec emacsclient -nw
-bindsym F2 exec emacsclient -ic
+bindsym $mod+m exec ~/.config/emacs/bin/doom run
 
 # manage monitors
-workspace 1 output HDMI-A-2
-workspace 2 output eDP-1
-exec_always xrandr --output HDMI-A-2 --primary --left-of eDP-1
+# workspace 1 output HDMI-A-2
+# workspace 2 output eDP-1
+# exec_always xrandr --output HDMI-A-2 --primary --left-of eDP-1
+exec swaymsg output eDP-1 mode 1920x1080@120Hz
 
 # set external display as primary
-output HDMI-A-2 pos 0 0
-output HDMI-A-2 scale 1.2
+# output HDMI-A-2 pos 0 0
+# output HDMI-A-2 scale 1.2
 
 # disable laptop screen when lid is closed
-bindswitch lid:on output eDP-1 disable
-bindswitch lid:off output eDP-1 enable
+# bindswitch lid:on output eDP-1 disable
+# bindswitch lid:off output eDP-1 enable
 
 # design
 smart_borders on
@@ -219,3 +215,8 @@ gaps inner 5
 gaps outer 3
 default_border pixel 3
 font pango:"Terminess Nerd Font" Medium 20
+
+# Run services.
+# exec waybar
+exec dbus-launch waybar
+# exec_always 'killall -q waybar; waybar'

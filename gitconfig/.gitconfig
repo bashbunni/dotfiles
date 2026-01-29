@@ -1,6 +1,7 @@
 [user]
 	name = bashbunni
 	email = bunni@bashbunni.dev
+	signingkey = /home/bashbunni/.ssh/id_ed25519
 [init]
 	defaultBranch = main
 [pull]
@@ -22,3 +23,5 @@
 	wl = worktree list
 	wd = worktree remove
 	pretty = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
+[gpg]
+	format = ssh

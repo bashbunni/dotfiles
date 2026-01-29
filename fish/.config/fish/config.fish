@@ -4,6 +4,10 @@ set -gx NVIM_PATH /usr/local/bin/nvim
 set -gx TERM xterm-256color
 set -gx DOTFILES ~/dotfiles
 alias firefox="open -a /Applications/Firefox.app"
+set -gx EMACSDIR $HOME/.config/emacs
+set -gx NIXPKGS_ALLOW_UNFREE 1
+
+alias nix-go="nix-shell -p go"
 
 set ssh "kitty +kitten ssh"
 
@@ -14,6 +18,11 @@ source $HOME/.config/fish/env.fish
 
 # Charm
 alias releases="gitty --all-projects --namespace charmbracelet github.com"
+function nix-crush
+  nix-channel --add https://github.com/nix-community/NUR/archive/main.tar.gz nur
+  nix-channel --update
+  nix-shell -p '(import <nur> { pkgs = import <nixpkgs> {}; }).repos.charmbracelet.crush'
+end
 
 # put /usr/local/bin before /usr/bin
 set -gx PATH $PATH /usr/local/go/bin /usr/local/bin /sbin/ /usr/local/opt/sqlite/bin $HOME/.config/emacs/bin $HOME/.npm/bin $GOPATH $GOPATH/bin /opt/homebrew/bin /nix/var/nix/profiles/default/bin/nix /opt/homebrew/opt/llvm/bin
@@ -36,7 +45,7 @@ set -gx GOSUMDB off
 set -gx GOPRIVATE off
 
 set -x GPG_TTY (tty)
-set -x EDITOR nvim
+set -x EDITOR nano
 
 # shortcuts
 set -x ta "tmux new -A -s"
@@ -61,7 +70,6 @@ end
 
 function fish_prompt
     echo (set_color 87d7af)(date +%H:%M:%S) (set_color 87d7ff)(prompt_pwd) (set_color ffafff)(fish_git_prompt) (set_color ffafff)'→ '
-
 end
 
 function fish_greeting
@@ -103,3 +111,17 @@ end
 
 # Game Development with Love 2D
 set -gx love /Applications/love.app/Contents/MacOS/love
+
+# Run crush with nix shell
+function crush-func
+    # Add the NUR channel.
+    nix-channel --add https://github.com/nix-community/NUR/archive/main.tar.gz nur
+    nix-channel --update
+    
+    # Get Crush in a Nix shell.
+    nix-shell -p '(import <nur> { pkgs = import <nixpkgs> {}; }).repos.charmbracelet.crush'
+end
+
+
+# Convert ssh-agent output to fish shell (not done by default when you start fish)
+eval (ssh-agent -c)
