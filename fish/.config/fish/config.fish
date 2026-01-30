@@ -125,3 +125,22 @@ end
 
 # Convert ssh-agent output to fish shell (not done by default when you start fish)
 eval (ssh-agent -c)
+
+function delve
+    fish_clipboard_copy "dlv debug --headless --api-version=2 --listen=127.0.0.1:43000 ."
+end
+
+function toggle-display
+  set output "eDP-1"
+  set highRes "2880x1920"
+  set lowRes "1920x1080"
+  
+  set width (swaymsg -t get_outputs | jq -r ".[] | select(.name == \"$OUTPUT\") | .current_mode.width")
+  echo width
+  
+  if test "$width" = "2880"
+    swaymsg output $output resolution $lowRes
+  else
+    swaymsg output $output resolution $highRes
+  end
+end

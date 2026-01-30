@@ -199,7 +199,7 @@ bindsym $mod+m exec ~/.config/emacs/bin/doom run
 # workspace 1 output HDMI-A-2
 # workspace 2 output eDP-1
 # exec_always xrandr --output HDMI-A-2 --primary --left-of eDP-1
-exec swaymsg output eDP-1 mode 1920x1080@120Hz
+# exec swaymsg output eDP-1 mode 1920x1080@120Hz
 
 # set external display as primary
 # output HDMI-A-2 pos 0 0
