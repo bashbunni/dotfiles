@@ -135,3 +135,19 @@
       (shell-command-to-string "wl-paste --no-newline")))
   (setq interprogram-cut-function #'my-wl-copy)
   (setq interprogram-paste-function #'my-wl-paste))
+
+;; remove LSP delays
+(after! flycheck (setq flycheck-idle-change-delay 0.1))
+(after! lsp-mode
+  (setq lsp-idle-delay 0.1)
+  :custom
+  (setq lsp-completion-enable-additional-text-edit t)
+  (setq lsp-modeline-code-actions-enable t)
+  )   
+
+;; load go-specific dap package
+(after! dap-mode
+  (require 'dap-dlv-go))   
+
+;; Better debugging
+(use-package! dape)   
