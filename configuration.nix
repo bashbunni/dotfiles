@@ -14,6 +14,12 @@
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelParams = [ "amd_iommu=off" ];
+
+  systemd.sleep.extraConfig = ''
+    MemorySleepMode=s2idle
+  '';
 
   networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -174,6 +180,8 @@
     wl-mirror # mirror your display (used in sway config)
     greetd
     tuigreet
+# update bios as needed
+    fwupd
   ];
 
   fonts = {
@@ -203,6 +211,8 @@
 
   # List services that you want to enable:
 
+  # enable firmware update manager daemon.
+  services.fwupd.enable = true;
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
 
