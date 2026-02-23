@@ -47,7 +47,7 @@
             "warning": 30,
             "critical": 15
         },
-        "bat":"BAT0",
+        "bat":"/org/freedesktop/UPower/devices/DisplayDevice",
         "format": "{icon} {capacity}%",
         "format-charging": " {capacity}%",
         "format-plugged": " {capacity}%",
