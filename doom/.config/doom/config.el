@@ -146,8 +146,10 @@
   )   
 
 ;; load go-specific dap package
-(after! dap-mode
-  (require 'dap-dlv-go))   
+;; (after! dap-mode
+;;   (require 'dap-dlv-go)
+;;   (dap-ui-mode 1)
+;;   (dap-tooltip-mode 1))   
 
 ;; Better debugging
 (use-package! dape)   
