@@ -133,26 +133,6 @@ function delve-run
     echo "dlv debug --headless --api-version=2 --listen=127.0.0.1:43000 ." | fish_clipboard_copy
 end
 
-function toggle-display
-  if command -q jq
-    set output "eDP-1"
-    set highRes "2880x1920"
-    set lowRes "1920x1080"
-    
-    set width (swaymsg -t get_outputs | jq -r ".[] | select(.name == \"$output\") | .current_mode.width")
-    echo $width
-    
-    if test "$width" = "2880"
-      swaymsg output $output resolution $lowRes
-    else
-      swaymsg output $output resolution $highRes
-    end
-  else
-    echo "jq required and not found on PATH. Run with nix-shell -p jq --run fish then toggle-display. This command has been copied to your clipboard"
-    echo "nix-shell -p jq --run fish" | fish_clipboard_copy
-  end
-end
-
 # bluetooth
 # bluetoothctl
 # power on
