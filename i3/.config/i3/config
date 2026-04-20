@@ -188,8 +188,8 @@ client.placeholder      #282A36 #282A36 #F8F8F2 #282A36   #282A36
 client.background       #F8F8F2
 
 bar {
-  i3bar_command $HOME/.config/polybar/launch.sh
- # status_command i3status
+ # i3bar_command $HOME/.config/polybar/launch.sh
+  status_command i3status
   colors {
     background #282A36
     statusline #F8F8F2
@@ -211,6 +211,6 @@ bindsym $mod+g exec --no-startup-id rofi -show window
 bindsym F1 exec $HOME/.config/emacs/bin/doom run
 
 # manage monitors
-workspace 1 output HDMI-2
-workspace 2 output eDP-1
-exec_always xrandr --output HDMI-2 --auto --left-of eDP-1
+workspace 1 output eDP-1
+workspace 2 output DP-4
+exec_always xrandr --output DP-4 --mode 2560x1440 --scale 0.8x0.8 --rate 59.97 --right-of eDP-1 --rotate normal  --output  eDP-1 --auto --scale 0.6x0.6 --pos 0x0 --primary

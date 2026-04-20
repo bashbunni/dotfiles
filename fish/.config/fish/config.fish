@@ -8,6 +8,9 @@ set -gx EMACSDIR $HOME/.config/emacs
 set -gx NIXPKGS_ALLOW_UNFREE 1
 
 alias nix-go="nix-shell -p go"
+alias docked="xrandr --output DP-4 --mode 2560x1440 --scale 0.8x0.8 --rate 59.97 --right-of eDP-1 --rotate normal --primary --output  eDP-1 --auto --scale 0.8x0.8 --pos 0x0 --brightness 0"
+alias dual-display="xrandr --output DP-4 --mode 2560x1440 --scale 0.8x0.8 --rate 59.97 --right-of eDP-1 --rotate normal --output  eDP-1 --auto --scale 0.6x0.6 --pos 0x0 --primary"
+alias mirror="xrandr --output DP-4 --same-as eDP-1"
 
 set ssh "kitty +kitten ssh"
 
@@ -149,3 +152,13 @@ function toggle-display
     echo "nix-shell -p jq --run fish" | fish_clipboard_copy
   end
 end
+
+# bluetooth
+# bluetoothctl
+# power on
+# agent on
+# default-agent
+# scan on
+# pair [hex-address]
+# connect [hex-address]
+# trust [hex-address]

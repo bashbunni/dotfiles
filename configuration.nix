@@ -8,14 +8,13 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      /home/bashbunni/dotfiles/nix/sway.nix
+#    /home/bashbunni/dotfiles/nix/sway.nix
     ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.kernelPackages = pkgs.linuxPackages_latest;
-#  boot.kernelParams = [ "amd_iommu=off" ];
 
   systemd.sleep.extraConfig = ''
     MemorySleepMode=s2idle
@@ -53,17 +52,48 @@
   # Enable the X11 windowing system.
   services.xserver = {
     enable = true;
-  # Configure keymap in X11
-    xkb = {
-      layout = "us";
-      variant = "";
+
+    desktopManager = {
+      xterm.enable = false;
+    };
+
+    windowManager.i3 = {
+      enable = true;
+      extraPackages = with pkgs; [
+        polybar
+        i3status
+        i3blocks
+        rofi
+      ];
+    };
+  displayManager = {
+    lightdm = {
+      enable = true;
+      greeters.gtk.enable = true;
     };
   };
+  };
+
+  services.displayManager = {
+    defaultSession = "none+i3";
+  };
+
+programs.i3lock.enable = true; # default i3 screen locker
+
+nixpkgs.config = {
+  packageOverrides = pkgs: rec {
+    polybar = pkgs.polybar.override {
+      i3Support = true;
+    };
+  };
+};
 
   # Enable the GNOME Desktop Environment.
 # replaced in sway.nix
-  services.displayManager.gdm.enable = true;
-  services.desktopManager.gnome.enable = true;
+  # Use GNOME login manager. TODO see if this is causing performance issues with i3
+services.displayManager.gdm.enable = false;
+# only run GNOME when it's chosen.
+services.desktopManager.gnome.enable = false;
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -141,7 +171,7 @@
     rofi
     yubikey-agent
     keepassxc
-    swayfx
+    # swayfx
     waybar
     xss-lock
     pkgs.networkmanagerapplet
@@ -149,11 +179,11 @@
     pavucontrol
     lolcat
     xorg.xkill
-    wl-clipboard
-    # xclip
+    xclip
     coreutils
     element-web
     zed-editor
+    bluez
 # rust stuff
     jetbrains.rust-rover
     rustup
@@ -178,9 +208,11 @@
 # languages
     go
 # yak shaving
-    wl-mirror # mirror your display (used in sway config)
     greetd
     tuigreet
+    lxappearance # customize i3 without changing config
+    lightdm # display manager
+    autorandr # auto select a display configuration based on connected devices.
 # update bios as needed
     fwupd
   ];
@@ -246,10 +278,4 @@ security.pam.services = {
 
   # Allow user to run swaylock
   # security.pam.services.swaylock = {};
-
-# Make sure waybar always runs
-# programs.waybar = {
-#   enable = true;
-# };
-
 }
