@@ -52,12 +52,18 @@
   # Enable the X11 windowing system.
   services.xserver = {
     enable = true;
-
-    desktopManager = {
-      xterm.enable = false;
+    displayManager = {
+      lightdm = {
+        enable = true;
+        greeters.gtk.enable = true;
+      };
+      defaultSession = "none+i3";
     };
-
-    windowManager.i3 = {
+   desktopManager = {
+      xterm.enable = false;
+      gnome.enable = true;
+    };
+     windowManager.i3 = {
       enable = true;
       extraPackages = with pkgs; [
         polybar
@@ -66,16 +72,6 @@
         rofi
       ];
     };
-  displayManager = {
-    lightdm = {
-      enable = true;
-      greeters.gtk.enable = true;
-    };
-  };
-  };
-
-  services.displayManager = {
-    defaultSession = "none+i3";
   };
 
 programs.i3lock.enable = true; # default i3 screen locker
@@ -89,11 +85,11 @@ nixpkgs.config = {
 };
 
   # Enable the GNOME Desktop Environment.
-# replaced in sway.nix
   # Use GNOME login manager. TODO see if this is causing performance issues with i3
 services.displayManager.gdm.enable = false;
 # only run GNOME when it's chosen.
-services.desktopManager.gnome.enable = false;
+# services.desktopManager.gnome.enable = false;
+# TODO run GNOME keyring for ssh connections (not done by default outside of GNOME)
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
