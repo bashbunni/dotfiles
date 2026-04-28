@@ -34,6 +34,8 @@
   environment.systemPackages = with pkgs; [
     ulauncher # A program launcher
     xdg-desktop-portal
+    wl-mirror
+    wl-clipboard
   ];
   # Fix waybar not launching outside of dbus-run-session.
   xdg.portal.enable = true;
