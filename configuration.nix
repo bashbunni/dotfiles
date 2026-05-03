@@ -160,6 +160,7 @@ services.displayManager.gdm.enable = false;
     ripgrep
     discord
     brave
+    chromium
     flameshot
     kitty
     fish
@@ -167,8 +168,6 @@ services.displayManager.gdm.enable = false;
     rofi
     yubikey-agent
     keepassxc
-    # swayfx
-    waybar
     xss-lock
     pkgs.networkmanagerapplet
     playerctl
@@ -180,9 +179,6 @@ services.displayManager.gdm.enable = false;
     element-web
     zed-editor
     bluez
-# rust stuff
-    jetbrains.rust-rover
-    rustup
 # emacs deps
 # make packages available to emacsclient (see nixos wiki's emacs docs)
     emacsPackages.pbcopy
@@ -201,16 +197,23 @@ services.displayManager.gdm.enable = false;
 # language servers
     gopls
     haskell-language-server
+# rust stuff
+    jetbrains.rust-rover
+    rustup
 # languages
     go
 # yak shaving
     greetd
     tuigreet
     lxappearance # customize i3 without changing config
-    lightdm # display manager
+    lightdm # display manager for login
     autorandr # auto select a display configuration based on connected devices.
 # update bios as needed
     fwupd
+# content
+    kdePackages.kdenlive
+    obs-studio
+    mesa # OpenCL for graphics x Davinci on Linux
   ];
 
   fonts = {
