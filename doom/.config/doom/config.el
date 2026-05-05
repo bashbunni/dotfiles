@@ -83,7 +83,6 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 
-;; source: https://nayak.io/posts/golang-development-doom-emacs/
 ;; golang formatting set up
 ;; use gofumpt
 (after! lsp-mode
