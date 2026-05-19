@@ -7,12 +7,11 @@ alias firefox="open -a /Applications/Firefox.app"
 set -gx EMACSDIR $HOME/.config/emacs
 set -gx NIXPKGS_ALLOW_UNFREE 1
 
-alias nix-go="nix-shell -p go"
-alias docked="xrandr --output DP-3 --mode 2560x1440 --scale 0.8x0.8 --rate 59.97 --right-of eDP-1 --rotate normal --primary --output  eDP-1 --auto --scale 0.8x0.8 --pos 0x0 --brightness 0"
-alias dual-display="xrandr --output DP-3 --mode 2560x1440 --scale 0.8x0.8 --rate 59.97 --right-of eDP-1 --rotate normal --output  eDP-1 --mode 2880x1920 --rate 120.00 --scale 0.5x0.5 --pos 0x0 --primary --brightness 1.25"
+# alias docked="xrandr --output DP-1 --mode 2560x1440 --scale 0.8x0.8 --rate 59.97 --right-of eDP-1 --rotate normal --primary --output  eDP-1 --auto --scale 0.8x0.8 --pos 0x0 --brightness 0"
+# alias dual-display="xrandr --output DP-1 --mode 2560x1440 --rate 60.00 --right-of eDP-1 --rotate normal --output  eDP-1 --mode 2880x1920 --rate 120.00 --pos 0x0 --primary --brightness 1.25"
 # laptop scales the resolution to make it legible on a small screen and uses --filter nearest to remove any fuzziness
-alias laptop="xrandr --output  eDP-1 --mode 2880x1920 --rate 120.00 --scale 0.5x0.5 --pos 0x0 --primary --brightness 1.25 --filter nearest"
-alias mirror="xrandr --output DP-4 --same-as eDP-1"
+# this shouldn't be hardcoded; alias laptop="xrandr --output  eDP-1 --mode 2880x1920 --rate 120.00 --scale 0.5x0.5 --pos 0x0 --primary --brightness 1.25 --filter nearest"
+alias mirror="xrandr --output DP-1 --scale 1 --filter nearest --same-as eDP-1 --scale-from 3840x2160"
 
 set ssh "kitty +kitten ssh"
 
