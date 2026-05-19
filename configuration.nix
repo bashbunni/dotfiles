@@ -5,11 +5,11 @@
 { config, pkgs, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-#    /home/bashbunni/dotfiles/nix/sway.nix
-    ];
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+    #    /home/bashbunni/dotfiles/nix/sway.nix
+  ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -18,6 +18,12 @@
 
   systemd.sleep.extraConfig = ''
     MemorySleepMode=s2idle
+  '';
+
+  services.xserver.displayManager.setupCommands = ''
+      LEFT='DP-1'
+      RIGHT='eDP-1'
+      ${pkgs.xorg.xrandr}/bin/xrandr --output $LEFT --rotate normal --left-of $RIGHT --output $RIGHT
   '';
 
   networking.hostName = "nixos"; # Define your hostname.
@@ -59,11 +65,11 @@
       };
       defaultSession = "none+i3";
     };
-   desktopManager = {
+    desktopManager = {
       xterm.enable = false;
       gnome.enable = true;
     };
-     windowManager.i3 = {
+    windowManager.i3 = {
       enable = true;
       extraPackages = with pkgs; [
         polybar
@@ -74,22 +80,35 @@
     };
   };
 
-programs.i3lock.enable = true; # default i3 screen locker
+  programs.i3lock.enable = true; # default i3 screen locker
 
-nixpkgs.config = {
-  packageOverrides = pkgs: rec {
-    polybar = pkgs.polybar.override {
-      i3Support = true;
+  nixpkgs.config = {
+    packageOverrides = pkgs: rec {
+      polybar = pkgs.polybar.override {
+        i3Support = true;
+      };
     };
   };
-};
+
+  environment.sessionVariables = rec {
+    XDG_CACHE_HOME = "$HOME/.cache";
+    XDG_CONFIG_HOME = "$HOME/.config";
+    XDG_DATA_HOME = "$HOME/.local/share";
+    XDG_STATE_HOME = "$HOME/.local/state";
+
+    # Not officially in the specification
+    XDG_BIN_HOME = "$HOME/.local/bin";
+    PATH = [
+      "${XDG_BIN_HOME}"
+    ];
+  };
 
   # Enable the GNOME Desktop Environment.
   # Use GNOME login manager. TODO see if this is causing performance issues with i3
-services.displayManager.gdm.enable = false;
-# only run GNOME when it's chosen.
-# services.desktopManager.gnome.enable = false;
-# TODO run GNOME keyring for ssh connections (not done by default outside of GNOME)
+  # services.displayManager.gdm.enable = false;
+  # only run GNOME when it's chosen.
+  # services.desktopManager.gnome.enable = false;
+  # TODO run GNOME keyring for ssh connections (not done by default outside of GNOME)
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -110,15 +129,47 @@ services.displayManager.gdm.enable = false;
     #media-session.enable = true;
   };
 
+  # graphics stuff
+  services.xserver.videoDrivers = [ "modesetting" ];
+
+  hardware.graphics = {
+    enable = true;
+    extraPackages = with pkgs; [
+      intel-media-driver
+      vpl-gpu-rt # For NixOS 24.05 and newer
+      intel-compute-runtime
+    ];
+  };
+
+  environment.sessionVariables = {
+    LIBVA_DRIVER_NAME = "iHD";
+  };
+
+  hardware.enableRedistributableFirmware = true;
+  boot.kernelParams = [ "i915.enable_guc=3" ];
+
+  # use 'xe' kernel module for newer Intel (panther lake).
+  boot.initrd.kernelModules = [
+    "i915"
+    "xe"
+  ];
+
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
+
+  # Docker
+  virtualisation.docker.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.bashbunni = {
     isNormalUser = true;
     home = "/home/bashbunni";
     description = "bashbunni";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+      "docker"
+    ];
     shell = pkgs.fish;
   };
 
@@ -142,16 +193,18 @@ services.displayManager.gdm.enable = false;
     "broadcom-sta-6.30.223.271-57-6.12.41"
   ];
 
-# Use emacs overlay. Required for Emacs 28+.
-# Use a commit SHA for a specific commit to prevent overlay rebuild every time (can be very long).
+  # Use emacs overlay. Required for Emacs 28+.
+  # Use a commit SHA for a specific commit to prevent overlay rebuild every time (can be very long).
   nixpkgs.overlays = [
-    (import (builtins.fetchTarball {
-      url = "https://github.com/nix-community/emacs-overlay/archive/87181272bf633bbc9f19a8aa8662833940bf18ed.tar.gz";
-    }))
+    (import (
+      builtins.fetchTarball {
+        url = "https://github.com/nix-community/emacs-overlay/archive/87181272bf633bbc9f19a8aa8662833940bf18ed.tar.gz";
+      }
+    ))
   ];
 
-# List packages installed in system profile. To search, run:
-# $ nix search wget
+  # List packages installed in system profile. To search, run:
+  # $ nix search wget
   environment.systemPackages = with pkgs; [
     wget
     git
@@ -179,8 +232,9 @@ services.displayManager.gdm.enable = false;
     element-web
     zed-editor
     bluez
-# emacs deps
-# make packages available to emacsclient (see nixos wiki's emacs docs)
+    docker
+    # emacs deps
+    # make packages available to emacsclient (see nixos wiki's emacs docs)
     emacsPackages.pbcopy
     emacsPackages.vterm
     libvterm
@@ -194,26 +248,29 @@ services.displayManager.gdm.enable = false;
     libgcc
     pam_u2f
     ispell
-# language servers
+    # language servers
     gopls
     haskell-language-server
-# rust stuff
+    # rust stuff
     jetbrains.rust-rover
     rustup
-# languages
+    # languages
     go
-# yak shaving
+    # yak shaving
     greetd
     tuigreet
     lxappearance # customize i3 without changing config
     lightdm # display manager for login
     autorandr # auto select a display configuration based on connected devices.
-# update bios as needed
+    # update bios as needed
     fwupd
-# content
+    # content
     kdePackages.kdenlive
+    davinci-resolve
     obs-studio
-    mesa # OpenCL for graphics x Davinci on Linux
+    # drivers
+    mesa # graphics drivers
+    framework-tool
   ];
 
   fonts = {
@@ -221,15 +278,15 @@ services.displayManager.gdm.enable = false;
       nerd-fonts.terminess-ttf
       nerd-fonts.blex-mono
       ibm-plex
-      openmoji-color	
-    ];       
+      openmoji-color
+    ];
     fontconfig = {
-        defaultFonts = {
-          sansSerif = [ "IBM Plex Sans" ];
-          serif = [ "IBM Plex Serif" ];
-          monospace = [ "Terminess Nerd Font" ];
-          emoji = [ "OpenMoji Color" ];
-        };
+      defaultFonts = {
+        sansSerif = [ "IBM Plex Sans" ];
+        serif = [ "IBM Plex Serif" ];
+        monospace = [ "Terminess Nerd Font" ];
+        emoji = [ "OpenMoji Color" ];
+      };
     };
     enableDefaultFonts = true;
   };
@@ -265,16 +322,19 @@ services.displayManager.gdm.enable = false;
     experimental-features = nix-command flakes 
   '';
 
-# Yubikey for sudo
-security.pam.services = {
-  sudo = {
-    u2fAuth = true;
+  # Yubikey for sudo
+  security.pam.services = {
+    sudo = {
+      u2fAuth = true;
+    };
   };
-};
 
   # Required for Polkit and D-Bus permissions
-#  security.polkit.enable = true;
+  #  security.polkit.enable = true;
 
   # Allow user to run swaylock
   # security.pam.services.swaylock = {};
 }
+
+# Notes
+# libvpl # for extended graphics support; broke xrandr for me...
