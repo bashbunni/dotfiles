@@ -8,7 +8,6 @@
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
-    #    /home/bashbunni/dotfiles/nix/sway.nix
   ];
 
   # Bootloader.
@@ -173,6 +172,18 @@
     shell = pkgs.fish;
   };
 
+#  users.users.monadmae = {
+#    isNormalUser = true;
+#    home = "/home/monadmae";
+#    description = "monadmae";
+#    extraGroups = [
+#      "networkmanager"
+#      "wheel"
+#      "docker"
+#    ];
+#    shell = pkgs.fish;
+#  };
+#
   # Enable automatic login for the user.
   services.xserver.displayManager.autoLogin.enable = false;
   services.xserver.displayManager.autoLogin.user = "bashbunni";
@@ -254,6 +265,7 @@
     # rust stuff
     jetbrains.rust-rover
     rustup
+    lldb
     # languages
     go
     # yak shaving
@@ -331,9 +343,6 @@
 
   # Required for Polkit and D-Bus permissions
   #  security.polkit.enable = true;
-
-  # Allow user to run swaylock
-  # security.pam.services.swaylock = {};
 }
 
 # Notes
