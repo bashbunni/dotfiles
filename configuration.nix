@@ -58,9 +58,8 @@
   services.xserver = {
     enable = true;
     displayManager = {
-      lightdm = {
+      gdm = {
         enable = true;
-        greeters.gtk.enable = true;
       };
       defaultSession = "none+i3";
     };
@@ -259,6 +258,7 @@
     libgcc
     pam_u2f
     ispell
+    tailscale
     # language servers
     gopls
     haskell-language-server
@@ -272,7 +272,6 @@
     greetd
     tuigreet
     lxappearance # customize i3 without changing config
-    lightdm # display manager for login
     autorandr # auto select a display configuration based on connected devices.
     # update bios as needed
     fwupd
