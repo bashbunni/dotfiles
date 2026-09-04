@@ -32,16 +32,21 @@ exec --no-startup-id nm-applet
 
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
+bindsym XF86AudioRaiseVolume exec --oo-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
 bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+
+# Brightness control
+# note: found my brightness control keys with xev, then used their keycode values.
+bindcode 233 exec brightnessctl set +1000
+bindcode 232 exec brightnessctl set 1000-
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec i3-sensible-terminal
+bindsym $mod+Return exec /run/current-system/sw/bin/kitty
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -201,6 +206,7 @@ bar {
     urgent_workspace   #FF5555 #FF5555 #F8F8F2
     binding_mode       #FF5555 #FF5555 #F8F8F2
   }
+  font pango:Terminess Nerd Font 16
 }
 
 # start dmenu
@@ -212,5 +218,6 @@ bindsym F1 exec $HOME/.config/emacs/bin/doom run
 
 # manage monitors
 workspace 1 output eDP-1
-workspace 2 output DP-4
-exec_always xrandr --output DP-4 --mode 2560x1440 --scale 0.8x0.8 --rate 59.97 --right-of eDP-1 --rotate normal  --output  eDP-1 --auto --scale 0.6x0.6 --pos 0x0 --primary
+workspace 2 output DP-1
+exec_always dunst
+exec_always xrandr --output DP-1 --mode 2560x1440 --rate 60.00 --right-of eDP-1 --rotate normal --filter nearest --output  eDP-1 --mode 2880x1920 --rate 120.00 --pos 0x0 --primary

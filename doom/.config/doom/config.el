@@ -33,7 +33,7 @@
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
 (setq doom-theme 'catppuccin)
-(setq catppuccin-flavor 'macchiato) ; or 'frappe 'latte, 'macchiato, or 'mocha
+(setq catppuccin-flavor 'mocha) ; or 'frappe 'latte, 'macchiato, or 'mocha
 (load-theme 'catppuccin t)
 ;; set transparency... I don't think this works so TODO
 (set-frame-parameter (selected-frame) 'alpha '(85 85))
@@ -45,7 +45,7 @@
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/org/")
+(setq org-directory "/run/media/bashbunni/mememe/more-org/")
 ;; you can customize your rss feed at ~/org/elfeed.org. This works because I'm
 ;; using +org with my rss plugin. Check out
 ;; https://github.com/remyhonig/elfeed-org to see an example.

@@ -74,6 +74,7 @@
         i3status
         i3blocks
         rofi
+	lm_sensors
       ];
     };
   };
@@ -93,6 +94,7 @@
     XDG_CONFIG_HOME = "$HOME/.config";
     XDG_DATA_HOME = "$HOME/.local/share";
     XDG_STATE_HOME = "$HOME/.local/state";
+    DEFAULT_BROWSER = "${pkgs.brave}/bin/brave";
 
     # Not officially in the specification
     XDG_BIN_HOME = "$HOME/.local/bin";
@@ -171,18 +173,18 @@
     shell = pkgs.fish;
   };
 
-#  users.users.monadmae = {
-#    isNormalUser = true;
-#    home = "/home/monadmae";
-#    description = "monadmae";
-#    extraGroups = [
-#      "networkmanager"
-#      "wheel"
-#      "docker"
-#    ];
-#    shell = pkgs.fish;
-#  };
-#
+  users.users.monadmae = {
+    isNormalUser = true;
+    home = "/home/monadmae";
+    description = "monadmae";
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+      "docker"
+    ];
+    shell = pkgs.fish;
+  };
+
   # Enable automatic login for the user.
   services.xserver.displayManager.autoLogin.enable = false;
   services.xserver.displayManager.autoLogin.user = "bashbunni";
@@ -258,7 +260,9 @@
     libgcc
     pam_u2f
     ispell
+    brightnessctl
     tailscale
+    dunst # notifications
     # language servers
     gopls
     haskell-language-server
@@ -282,6 +286,9 @@
     # drivers
     mesa # graphics drivers
     framework-tool
+    # remote desktop
+    parsec-bin
+    moonlight-qt # open source option; works with TailScale
   ];
 
   fonts = {
@@ -310,6 +317,10 @@
   # };
 
   # List services that you want to enable:
+
+  services.tailscale = {
+    enable = true;
+  };
 
   # enable firmware update manager daemon.
   services.fwupd.enable = true;

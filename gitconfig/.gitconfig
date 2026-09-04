@@ -7,7 +7,7 @@
 [pull]
 	rebase = true
 [core]
-	editor = nvim --clean
+	editor = vim
 	excludesfile = $HOME/.gitignore_global
 [commit]
 	gpgsign = true
